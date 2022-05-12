@@ -1,0 +1,21 @@
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}">
+    <title>Santa BaekJoon</title>
+</head>
+<body>
+    <div class='hello'>산타백준에 오신 것을 환영합니다!🎅</div>
+    <div class='username_wrapper'>
+        {% comment %} <span class="username_input_explain">백준 계정이름을 입력하세요</span> {% endcomment %}
+        <form action= "{% url 'result' %}" method='POST'>
+            {% csrf_token %}
+            <input class="username_input_box" type="text" placeholder="백준 username" name="username"></input>
+            <button class="username_submitbutton" type="submit">submit</button>
+        </form>
+    </div>
+</body>
+</html>
