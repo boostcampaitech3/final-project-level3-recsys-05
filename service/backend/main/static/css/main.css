@@ -1,0 +1,34 @@
+.hello {
+    background-color: white;
+    font-size: 60px;
+    font-weight: 700;
+    margin: 10% 20% 0 20%;
+    text-align: center; 
+}
+
+.username_wrapper {
+    display: flex;
+    margin: 20px 20% 0 20%;
+    justify-content: center;
+}
+
+.username_input_box {
+    font-size: 30px;
+    margin: auto;
+    text-align: center;
+}
+
+.username_submitbutton {
+    background-color: royalblue;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    height: 40px;
+    width: 90px;
+    font-weight: 400;
+    margin-left: 6px;
+    font-size: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
