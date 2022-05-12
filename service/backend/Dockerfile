@@ -6,8 +6,8 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-WORKDIR ./mytestsite
-
+#WORKDIR ./mytestsite
+CMD ["echo","pwd"]
 CMD ["python3", "manage.py", "runserver", "0:8000"]
 
 EXPOSE 8000
