@@ -8,6 +8,6 @@ COPY . .
 
 #WORKDIR ./mytestsite
 CMD ["echo","pwd"]
-CMD ["python3", "manage.py", "runserver", "0:8888"]
+CMD ["python3", "manage.py", "runserver", "0.0.0.0:8888"]
 
 EXPOSE 8888
