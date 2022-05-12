@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+import requests
+
 # Create your views here.
 def index(request):
     msg = 'test'
@@ -12,5 +14,12 @@ def read(request, id):
     return HttpResponse('Read' + id)
 
 def result(request):
-    result = request.POST['username']
-    return HttpResponse(result)
+    username = request.POST['username']
+    body_dict = {
+        "username" : username,
+        "key" : 123456
+    }
+    url = 'http://101.101.218.250:30005/'
+    res = requests.post(url, json=body_dict)
+
+    return HttpResponse(res)
