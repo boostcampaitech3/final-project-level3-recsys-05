@@ -2,17 +2,23 @@
 import requests
 from flask import Flask, request, jsonify
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id
+from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, word2vec_model, output_fitering, output_sorted
 
 app = Flask(__name__)
 
 @app.route('/', methods = ["POST"])
 def main():
     if request.method == 'POST':
-        
+        non_filtering_output = 'Not-Found-Key'
+        lately_filtering_output = 'Not-Found-Key'
+        total_filtering_output = 'Not-Found-Key'
+
         if request.json['key'] == 123456:
-            user_id = request.json['user_id']
-            # user_id = request.form['user_id']
+            non_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
+            lately_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
+            total_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
+
+            user_id = request.json['username']
 
             # 백준 아이디에 따른 추가 데이터 수집
             # (1) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
@@ -29,24 +35,28 @@ def main():
                     total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
 
                     # 모델
-                    ## output = model(lately_solved_problem_seq)
-                    
-                    # 모델 아웃풋 데이터 필터링
-                    ## output = 필터링 (풀었던 문제 list 제거 + argsort Top10 문제 추출)
+                    output = word2vec_model(lately_solved_problem_seq)
+
+                    # 필터링 + 문제 추천
+                    non_filtering_output = output_sorted(output=output, top=10)
+
+                    lately_filtering_output = output_fitering(output=output, fiterling_list=lately_solved_problem_seq)
+                    lately_filtering_output = output_sorted(output=lately_filtering_output, top=10)
+
+                    total_filtering_output = output_fitering(output=output, fiterling_list=total_solved_problem_seq)
+                    total_filtering_output = output_sorted(output=total_filtering_output, top=10)
 
                     # 모델 아웃풋 데이터 정제(idx를 문제 번호로 변환)
-                    output = preprocessing_seq_idx2problem_id(lately_solved_problem_seq)
-                    
-                else:
-                    output = '최근 문제가 없는 유저 입니다.'
-            else:
-                output = '최근 문제가 없는 유저 입니다.'
+                    non_filtering_output = preprocessing_seq_idx2problem_id(non_filtering_output)
+                    lately_filtering_output = preprocessing_seq_idx2problem_id(lately_filtering_output)
+                    total_filtering_output = preprocessing_seq_idx2problem_id(total_filtering_output)
 
-        else:
-            output = '존재하지 않는 key 값 입니다.'
-
-        datas = {'output': output}
-
+        datas = {
+            'non_filtering_output'   : non_filtering_output,
+            'lately_filtering_output': lately_filtering_output,
+            'total_filtering_output' : total_filtering_output
+            }
+        
         return jsonify(datas)
 
 if __name__ == '__main__':
