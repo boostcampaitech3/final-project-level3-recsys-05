@@ -3,13 +3,13 @@ import numpy as np
 from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 
-with open('/opt/ml/final-project-level3-recsys-05/Model-Server/preprocessing/problem_id2idx.json', 'r', encoding = 'utf-8') as f:
+with open('/opt/ml/final-project-level3-recsys-05/Model/Model-Server/preprocessing/problem_id2idx.json', 'r', encoding = 'utf-8') as f:
     problem_id2idx = json.load(f)
 
-with open('/opt/ml/final-project-level3-recsys-05/Model-Server/preprocessing/idx2problem_id.json', 'r', encoding = 'utf-8') as f:
+with open('/opt/ml/final-project-level3-recsys-05/Model/Model-Server/preprocessing/idx2problem_id.json', 'r', encoding = 'utf-8') as f:
     idx2problem_id = json.load(f)
 
-model = Word2Vec.load('/opt/ml/final-project-level3-recsys-05/Model/model/Word2Vec_problem_seq.model')
+model = Word2Vec.load('/opt/ml/final-project-level3-recsys-05/Model/Model-Experiment/model/Word2Vec_problem_seq.model')
 
 vectors = []
 for idx in range(len(model.wv.key_to_index.keys())):
