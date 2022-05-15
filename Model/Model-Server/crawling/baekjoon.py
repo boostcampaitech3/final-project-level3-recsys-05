@@ -23,7 +23,7 @@ def total_solved_problem_seq_collection(user_id):
     response = requests.request("GET", url, headers=headers)
 
     if response.status_code == 404:
-        user_seq = []
+        user_seq = 'Not-Found-User'
     else:
         soup = BeautifulSoup(response.text, 'html.parser')
         user_seq = [problem.text for problem in soup.select('body > div.wrapper > div.container.content > div.row > div:nth-child(2) > div > div.col-md-9 > div:nth-child(2) > div.panel-body > div > a')]
