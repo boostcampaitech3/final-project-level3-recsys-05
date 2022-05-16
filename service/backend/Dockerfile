@@ -1,4 +1,4 @@
-FROM python:3.5
+FROM python:3.7
 
 RUN pip3 install django
 RUN pip3 install requests
