@@ -11,9 +11,9 @@
     <div class='hello'>산타백준에 오신 것을 환영합니다!🎅</div>
     <div class='username_wrapper'>
         {% comment %} <span class="username_input_explain">백준 계정이름을 입력하세요</span> {% endcomment %}
-        <form action= "{% url 'result' %}" method='POST'>
-            {% csrf_token %}
-            <input class="username_input_box" type="text" placeholder="백준 username" name="username"></input>
+        <form action= "{% url 'result'%}" method='GET'>
+{#            {% csrf_token %}#}
+            <input class="username_input_box" type="text" placeholder="백준 username" name="username">
             <button class="username_submitbutton" type="submit">submit</button>
         </form>
     </div>

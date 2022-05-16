@@ -13,8 +13,8 @@ def create(request):
 def read(request, id):
     return HttpResponse('Read' + id)
 
-def result(request):
-    username = request.POST['username']
+def nologin(request):
+    username = request.GET['username']
     body_dict = {
         "username" : username,
         "key" : 123456

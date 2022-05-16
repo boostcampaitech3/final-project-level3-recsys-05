@@ -7,5 +7,5 @@ urlpatterns = [
     path('', views.index),
     path('create/', views.create),
     path('read/id/', views.read),
-    path('result/', views.result, name = 'result')
+    path('nologin/', views.nologin, name = 'result')
 ]
