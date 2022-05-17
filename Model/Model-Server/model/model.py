@@ -13,6 +13,9 @@ with open(os.path.join(DATA_PATH, 'problem_id2idx.json'), 'r', encoding = 'utf-8
 with open(os.path.join(DATA_PATH, 'idx2problem_id.json'), 'r', encoding = 'utf-8') as f:
     idx2problem_id = json.load(f)
 
+# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq'
+# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-problem_course_seq'
+# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-problem_course_seq-32'
 model = Word2Vec.load(os.path.join(MODEL_PATH, 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq.model'))
 
 vectors = []
