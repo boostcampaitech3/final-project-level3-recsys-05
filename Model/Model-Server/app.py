@@ -2,7 +2,7 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, word2vec_model, output_fitering, output_sorted
+from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, word2vec_model, output_fitering, output_sorted, user_seq_model
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -56,7 +56,7 @@ class SantaBacekJoonApiServer(Resource):
                         total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
 
                         # 모델
-                        output = word2vec_model(lately_solved_problem_seq)
+                        output = user_seq_model(lately_solved_problem_seq)
 
                         # 필터링 + 문제 추천
                         non_filtering_output = output_sorted(output=output, top=10)
