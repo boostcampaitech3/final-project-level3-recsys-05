@@ -34,3 +34,7 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+bootJar{
+	mainClass = 'com.boj.santa.santaboj.SantaBojApplication'
+}
