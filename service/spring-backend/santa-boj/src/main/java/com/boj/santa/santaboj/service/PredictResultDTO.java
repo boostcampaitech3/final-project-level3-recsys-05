@@ -15,4 +15,6 @@ public class PredictResultDTO {
     private List<String> latelyFilteringOutput;
     @JsonProperty("total_filtering_output")
     private List<String> totalFilteringOutput;
+    @JsonProperty("model_type")
+    private String modelType;
 }
