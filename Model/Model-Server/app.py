@@ -2,7 +2,7 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, word2vec_model, output_fitering, output_sorted, user_seq_model
+from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -15,6 +15,7 @@ santa_bacek_joon_api_fields = santa_bacek_joon_api.model('Input', {  # Model 객
 })
 
 santa_bacek_joon_api_returns = santa_bacek_joon_api.model('Output', {  # Model 객체 생성
+    'model_type': fields.String(description='추천된 모델의 Type', required=True, example = "item2vec or user_seq or pretrained_user_seq"),
     'non_filtering_output': fields.String(description='필터링 되지 않은 추천 List', required=True, example = "Not-Found-Key or Not-Found-User or Not-Found-User-Lately-Solved-Problem or ['1000', '1001'....]"),
     'lately_filtering_output': fields.String(description='최근 풀이에 속하는 문제가 필터링된 추천 List', required=True, example = "Not-Found-Key or Not-Found-User or Not-Found-User-Lately-Solved-Problem or ['1000', '1001'....]"),
     'total_filtering_output' : fields.String(description='지금 까지 푼 모든 문제가 필터링된 추천 List', required=True, example = "Not-Found-Key or Not-Found-User or Not-Found-User-Lately-Solved-Problem or ['1000', '1001'....]"),
@@ -27,10 +28,20 @@ class SantaBacekJoonApiServer(Resource):
     @santa_bacek_joon_api.response(200, 'Success', santa_bacek_joon_api_returns)
     def post(self):
         """해당 유저에 대한 추천 문제를 반환 합니다."""
+        
+        # 추후에 DB와 연동
+        model_type_click_dict = {
+            'item2vec' : {'pos_click' : 1, 'total_view' : 1},
+            'user_seq' : {'pos_click' : 1, 'total_view' : 1},
+            'pretrained_user_seq' : {'pos_click' : 1, 'total_view' : 1},
+        }
+        
+        model_type = 'Not-Found-Key'
         non_filtering_output = 'Not-Found-Key'
         lately_filtering_output = 'Not-Found-Key'
         total_filtering_output = 'Not-Found-Key'
         if request.json['key'] == 123456:
+            model_type = 'Not-Found-User'
             non_filtering_output = 'Not-Found-User'
             lately_filtering_output = 'Not-Found-User'
             total_filtering_output = 'Not-Found-User'
@@ -40,6 +51,7 @@ class SantaBacekJoonApiServer(Resource):
             user_id = request.json['username']
             total_solved_problem_seq = total_solved_problem_seq_collection(user_id)
             if total_solved_problem_seq != 'Not-Found-User':
+                model_type = 'Not-Found-User-Lately-Solved-Problem'
                 non_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
                 lately_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
                 total_filtering_output = 'Not-Found-User-Lately-Solved-Problem'
@@ -54,9 +66,17 @@ class SantaBacekJoonApiServer(Resource):
                     if lately_solved_problem_seq:
                         # 백준 아이디 지금 까지 푼 문제 리스트 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
                         total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
+                        
+                        # MAB
+                        model_type = thompson_sampling(model_type_click_dict)
 
-                        # 모델
-                        output = user_seq_model(lately_solved_problem_seq)
+                        # 추천
+                        if model_type == 'item2vec':
+                            output = item2vec_model(lately_solved_problem_seq)
+                        elif model_type == 'user_seq':
+                            output = user_seq_model(lately_solved_problem_seq)
+                        elif model_type == 'pretrained_user_seq':
+                            output = pretrained_user_seq_model(lately_solved_problem_seq)
 
                         # 필터링 + 문제 추천
                         non_filtering_output = output_sorted(output=output, top=10)
@@ -73,6 +93,7 @@ class SantaBacekJoonApiServer(Resource):
                         total_filtering_output = preprocessing_seq_idx2problem_id(total_filtering_output)
 
         datas = {
+            'model_type'   : model_type,
             'non_filtering_output'   : non_filtering_output,
             'lately_filtering_output': lately_filtering_output,
             'total_filtering_output' : total_filtering_output
