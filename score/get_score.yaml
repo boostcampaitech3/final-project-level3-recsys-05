@@ -1,0 +1,6 @@
+headers: {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
+  } # 본인의 헤더값 넣어주시면 됩니다!
+start: 15001 # 시작 인덱스
+end: 20000 # 끝 인덱스
+file_name: "score_15001_to_20000.csv" # 저장할 파일명

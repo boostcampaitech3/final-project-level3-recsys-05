@@ -1,0 +1,8 @@
+headers:
+  {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.127 Safari/537.36",
+  }
+start: 2001
+end: 5000
+save_path: "D:\\boostcamp\\final_project\\data\\users_by_problem_data_2001_5000.csv"
+problem_path: "D:\\boostcamp\\final_project\\data\\problem_api_1000_to_25150.csv"
