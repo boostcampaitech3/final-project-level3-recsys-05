@@ -58,7 +58,7 @@ def word2vec_model(problem_seq):
 
 def user_seq_model(problem_seq):
     model.eval()
-    input = {'assessmentItem' : torch.tensor([problem_seq[::-1][:-1]])}
+    input = {'assessmentItem' : torch.tensor([problem_seq[::-1][:-1]]) + 1}
     with torch.no_grad():
         output = model(input)[0].cpu().numpy()
     return output
