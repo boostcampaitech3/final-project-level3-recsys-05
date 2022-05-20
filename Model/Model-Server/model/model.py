@@ -1,11 +1,12 @@
 import os
 import json
+import pickle
 import numpy as np
 from scipy.stats import beta
 from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 
-from .seq_model import SASRec
+from .model_architecture import SASRec, EASE
 
 import torch
 
@@ -66,6 +67,18 @@ pretrained_user_seq = SASRec(
 # new-Item2Vec-pretrained-User-Seq-Transformer
 pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-Item2Vec-pretrained-User-Seq-Transformer' + '.pt')))
 
+# ease
+class MyCoustomUnpickler(pickle.Unpickler):
+    def find_class(self, __module_name: str, __global_name: str):
+        if __module_name == '__main__':
+            __module_name = __name__
+        return super().find_class(__module_name, __global_name)
+
+with open(os.path.join(MODEL_PATH, 'ease.pickle'), 'rb') as file:
+    ease = MyCoustomUnpickler(file)
+    ease = ease.load()
+    ease.device = device
+
 def thompson_sampling(model_type_click_dict):
     '''
     
@@ -89,6 +102,13 @@ def thompson_sampling(model_type_click_dict):
     if idx == 0: return 'item2vec'
     elif idx == 1: return 'user_seq'
     elif idx == 2: return 'pretrained_user_seq'
+
+def ease_model(problem_seq):
+    mat = torch.zeros(size = (1, len(problem_id2idx)))
+    mat[0, problem_seq] = 1
+    output = ease.predict(mat)[0].cpu().numpy()
+    ease.clear_memory()
+    return output
 
 def item2vec_model(problem_seq):
     cos_arr = cosine_similarity(item2vec.wv[idx2problem_id[str(problem_seq[0])]].reshape(1, -1), vectors)[0]

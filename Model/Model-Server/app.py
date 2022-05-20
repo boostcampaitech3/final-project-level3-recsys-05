@@ -2,7 +2,7 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model
+from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -109,9 +109,10 @@ santa_bacek_joon_model_test_api_fields = santa_bacek_joon_model_test_api.model('
 })
 
 santa_bacek_joon_model_test_api_returns = santa_bacek_joon_model_test_api.model('Model-Test-Output', {  # Model 객체 생성
-    'item2vec': fields.String(description='item2vec 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
-    'user_seq': fields.String(description='user_seq 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
-    'pretrained_user_seq': fields.String(description='pretrained_user_seq 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
+    'item2vec': fields.String(description='item2vec 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+    'user_seq': fields.String(description='user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+    'pretrained_user_seq': fields.String(description='pretrained_user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+    'ease': fields.String(description='ease 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
 })
 
 @santa_bacek_joon_model_test_api.route('/')
@@ -125,11 +126,13 @@ class SantaBacekJoonApiModelTestServer(Resource):
         item2vec = 'Not-Found-Key'
         user_seq = 'Not-Found-Key'
         pretrained_user_seq = 'Not-Found-Key'
+        ease = 'Not-Found-Key'
 
         if request.json['key'] == 123456:
             item2vec = 'Not-Found-User'
             user_seq = 'Not-Found-User'
             pretrained_user_seq = 'Not-Found-User'
+            ease = 'Not-Found-User'
 
             # 백준 아이디에 따른 추가 데이터 수집
             # (1) 백준 아이디 기준 지금 까지 푼 문제 리스트 수집
@@ -139,6 +142,7 @@ class SantaBacekJoonApiModelTestServer(Resource):
                 item2vec = 'Not-Found-User-Lately-Solved-Problem'
                 user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
+                ease = 'Not-Found-User-Lately-Solved-Problem'
 
                 # 백준 아이디에 따른 추가 데이터 수집
                 # (2) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
@@ -152,21 +156,30 @@ class SantaBacekJoonApiModelTestServer(Resource):
                         total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
 
                         item2vec = item2vec_model(lately_solved_problem_seq)
+                        item2vec = output_fitering(output=item2vec, fiterling_list=total_solved_problem_seq)
                         item2vec = output_sorted(output=item2vec, top=10)
                         item2vec = preprocessing_seq_idx2problem_id(item2vec)
 
                         user_seq = user_seq_model(lately_solved_problem_seq)
+                        user_seq = output_fitering(output=user_seq, fiterling_list=total_solved_problem_seq)
                         user_seq = output_sorted(output=user_seq, top=10)
                         user_seq = preprocessing_seq_idx2problem_id(user_seq)
 
                         pretrained_user_seq = pretrained_user_seq_model(lately_solved_problem_seq)
+                        pretrained_user_seq = output_fitering(output=pretrained_user_seq, fiterling_list=total_solved_problem_seq)
                         pretrained_user_seq = output_sorted(output=pretrained_user_seq, top=10)
                         pretrained_user_seq = preprocessing_seq_idx2problem_id(pretrained_user_seq)
 
+                        ease = ease_model(total_solved_problem_seq)
+                        ease = output_fitering(output=ease, fiterling_list=total_solved_problem_seq)
+                        ease = output_sorted(output=ease, top=10)
+                        ease = preprocessing_seq_idx2problem_id(ease)
+
         datas = {
-            'item2vec'   : item2vec,
-            'user_seq'   : user_seq,
+            'item2vec'           : item2vec,
+            'user_seq'           : user_seq,
             'pretrained_user_seq': pretrained_user_seq,
+            'ease'               : ease,
             }
 
         return datas

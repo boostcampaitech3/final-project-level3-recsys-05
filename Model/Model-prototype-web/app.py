@@ -1,7 +1,8 @@
-import requests
-from flask import Flask, render_template, request, url_for, redirect
 import os
 import json
+import requests
+
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
@@ -86,6 +87,9 @@ def result():
 
         for model_type in res.keys():
             item_list = res[model_type]
+            if isinstance(item_list, str):
+                return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 존재하지 않는 아이디 입니다. </h1>" + '''</div>''')
+
             item_list = ",".join(list(map(str, item_list)))
             url = f"https://solved.ac/api/v3/problem/lookup?problemIds={item_list}"
             headers = {"Content-Type": "application/json"}
