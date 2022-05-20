@@ -3,12 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link th:href="@{/css/main.css}"
+  <link th:href="@{/css/main.css?after}"
         href="css/main.css" rel="stylesheet">
   <title>Santa BaekJoon</title>
 </head>
 <body>
+<div class="upper_side_bar">
+  <div class="login_button">로그인</div>
+</div>
 <div class='hello'>산타백준에 오신 것을 환영합니다!🎅</div>
+<div th:if="${principal} != 'anonymousUser'" th:text="${principal} + '님 환영합니다'" class="welcome_member">
+  anonymous 님 환영합니다.
+</div>
 <div class='username_wrapper'>
   <form action= "nologin" method='GET'>
     <input class="username_input_box" type="text" placeholder="백준 username" name="username">

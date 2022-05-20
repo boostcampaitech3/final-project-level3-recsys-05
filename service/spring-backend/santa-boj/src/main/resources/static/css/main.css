@@ -16,6 +16,12 @@ a:hover { color: royalblue; text-decoration: underline;}
     text-align: center;
 }
 
+.welcome_member {
+    text-align: center;
+    font-size: 30px;
+    margin: 5px 0 5px 0;
+}
+
 .username_wrapper {
     display: flex;
     margin: 20px 20% 0 20%;

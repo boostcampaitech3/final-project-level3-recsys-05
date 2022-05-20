@@ -11,7 +11,9 @@
 <div class='hello'>환영합니다🎅</div>
 <div class='username_wrapper'>
     <form action= "signup" method='POST'>
-        <input class="username_input_box" type="text" placeholder="username" name="username">
+        <input th:if="${already} == 'N'" class="username_input_box" type="text" placeholder="username" name="username">
+        <span th:if="${already} == 'Y'">이미 존재하는 username 입니다.</span>
+        <input th:if="${already} == 'Y'" style="border: 2px solid red;" class="username_input_box" type="text" placeholder="username" name="username">
         <input class="username_input_box" type="password" placeholder="password" name="password">
         <button class="username_submitbutton" type="submit">signup</button>
     </form>

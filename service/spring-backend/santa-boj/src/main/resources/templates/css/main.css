@@ -6,7 +6,16 @@ a:visited { color: black; text-decoration: none;}
 
 a:hover { color: royalblue; text-decoration: underline;}
 
+.upper_side_bar{
+    height: 8%;
+    position: fixed;
+    background-color: royalblue;
+}
 
+.login_button {
+    background-color: tomato;
+    right: -1px;
+}
 
 .hello {
     background-color: white;
