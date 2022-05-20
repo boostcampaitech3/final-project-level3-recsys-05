@@ -73,7 +73,7 @@ public class MemberController {
                 return "redirect:/";
             }
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/result")

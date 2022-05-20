@@ -8,13 +8,20 @@ a:hover { color: royalblue; text-decoration: underline;}
 
 .upper_side_bar{
     height: 8%;
+    width: 100%;
     position: fixed;
+    top: 0;
     background-color: royalblue;
 }
 
 .login_button {
+    display: flex;
     background-color: tomato;
-    right: -1px;
+    width: 100px;
+    height: 50px;
+    float: right;
+    justify-content: center;
+
 }
 
 .hello {
@@ -23,6 +30,12 @@ a:hover { color: royalblue; text-decoration: underline;}
     font-weight: 700;
     margin: 10% 20% 0 20%;
     text-align: center;
+}
+
+.welcome_member {
+    text-align: center;
+    font-size: 30px;
+    margin: 5px 0 5px 0;
 }
 
 .username_wrapper {
