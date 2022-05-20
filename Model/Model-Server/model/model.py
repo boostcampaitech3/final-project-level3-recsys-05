@@ -49,7 +49,9 @@ user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'User-Seq-Transformer' + '.pt')))
+# User-Seq-Transformer
+# new-User-Seq-Transformer
+user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-User-Seq-Transformer' + '.pt')))
 
 # pretrained_user_seq
 pretrained_user_seq = SASRec(
@@ -60,7 +62,9 @@ pretrained_user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'Item2Vec-pretrained-User-Seq-Transformer' + '.pt')))
+# User-Seq-Transformer
+# new-Item2Vec-pretrained-User-Seq-Transformer
+pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-Item2Vec-pretrained-User-Seq-Transformer' + '.pt')))
 
 def thompson_sampling(model_type_click_dict):
     '''

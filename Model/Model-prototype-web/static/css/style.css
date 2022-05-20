@@ -1,0 +1,66 @@
+.content {
+    text-align: center;
+    padding: 25px;
+}
+.title {
+    text-align: center;
+    padding: 25px;
+}
+.title a{
+    text-decoration: none;
+}
+.menu-bar{
+    text-align: center;
+    display: block;
+    padding : 25px;
+}
+.nav {
+    text-align: center;
+    list-style: none;
+    height: 40px;
+    padding: 5px 1px;
+    margin: 0;
+}
+.nav li{
+    position: relative;
+    margin: 5px 30px;
+    padding: 0;
+    display:inline;
+}
+.nav li a{
+    border:1px solid;
+    border-radius: .3rem;
+    border-color: #007bff;
+    color: #007bff;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 7px 8px;
+    margin: 0;
+    text-decoration: none;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+.item-list {
+    text-align: center;
+    float: left;
+    width: 33%;
+}
+#level{
+    font-size: 20px;
+    font-weight: bold;
+}
+#item-name{
+    font-size: 15px;
+    font-weight: bold;
+}
+#item-name a{
+    text-decoration: none;
+}
+#item-property{
+    font-size: 10px;
+}

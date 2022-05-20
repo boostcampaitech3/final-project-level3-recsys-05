@@ -101,6 +101,76 @@ class SantaBacekJoonApiServer(Resource):
 
         return datas
 
+santa_bacek_joon_model_test_api = api.namespace('test', description = '모델 성능 Test API')
+
+santa_bacek_joon_model_test_api_fields = santa_bacek_joon_model_test_api.model('Model-Test-Input', {  # Model 객체 생성
+    'key': fields.Integer(description='인증을 위한 key 값', required=True),
+    'username': fields.String(description='검색을 위한 user-ID', required=True, example = 'ID'),
+})
+
+santa_bacek_joon_model_test_api_returns = santa_bacek_joon_model_test_api.model('Model-Test-Output', {  # Model 객체 생성
+    'item2vec': fields.String(description='item2vec 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
+    'user_seq': fields.String(description='user_seq 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
+    'pretrained_user_seq': fields.String(description='pretrained_user_seq 필터링 되지 않은 추천 List', required=True, example = "['1000', '1001'....]"),
+})
+
+@santa_bacek_joon_model_test_api.route('/')
+class SantaBacekJoonApiModelTestServer(Resource):
+
+    @santa_bacek_joon_model_test_api.expect(santa_bacek_joon_model_test_api_fields)
+    @santa_bacek_joon_model_test_api.response(200, 'Success', santa_bacek_joon_model_test_api_returns)
+    def post(self):
+        """각 모델에 따른 추천 결과를 반환합니다."""
+
+        item2vec = 'Not-Found-Key'
+        user_seq = 'Not-Found-Key'
+        pretrained_user_seq = 'Not-Found-Key'
+
+        if request.json['key'] == 123456:
+            item2vec = 'Not-Found-User'
+            user_seq = 'Not-Found-User'
+            pretrained_user_seq = 'Not-Found-User'
+
+            # 백준 아이디에 따른 추가 데이터 수집
+            # (1) 백준 아이디 기준 지금 까지 푼 문제 리스트 수집
+            user_id = request.json['username']
+            total_solved_problem_seq = total_solved_problem_seq_collection(user_id)
+            if total_solved_problem_seq != 'Not-Found-User':
+                item2vec = 'Not-Found-User-Lately-Solved-Problem'
+                user_seq = 'Not-Found-User-Lately-Solved-Problem'
+                pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
+
+                # 백준 아이디에 따른 추가 데이터 수집
+                # (2) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
+                lately_solved_problem_seq = lately_solved_problem_seq_collection(user_id)
+
+                if lately_solved_problem_seq:
+                    # 모델 인풋 데이터 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
+                    lately_solved_problem_seq = preprocessing_seq_problem_id2idx(lately_solved_problem_seq)
+                    if lately_solved_problem_seq:
+                        # 백준 아이디 지금 까지 푼 문제 리스트 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
+                        total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
+
+                        item2vec = item2vec_model(lately_solved_problem_seq)
+                        item2vec = output_sorted(output=item2vec, top=10)
+                        item2vec = preprocessing_seq_idx2problem_id(item2vec)
+
+                        user_seq = user_seq_model(lately_solved_problem_seq)
+                        user_seq = output_sorted(output=user_seq, top=10)
+                        user_seq = preprocessing_seq_idx2problem_id(user_seq)
+
+                        pretrained_user_seq = pretrained_user_seq_model(lately_solved_problem_seq)
+                        pretrained_user_seq = output_sorted(output=pretrained_user_seq, top=10)
+                        pretrained_user_seq = preprocessing_seq_idx2problem_id(pretrained_user_seq)
+
+        datas = {
+            'item2vec'   : item2vec,
+            'user_seq'   : user_seq,
+            'pretrained_user_seq': pretrained_user_seq,
+            }
+
+        return datas
+
 if __name__ == '__main__':
     # app.run(debug = True)
     app.run(host='0.0.0.0', debug = False, port = 30005)
