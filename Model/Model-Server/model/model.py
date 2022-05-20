@@ -1,40 +1,23 @@
 import os
-import json
 import pickle
 import numpy as np
 from scipy.stats import beta
-from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 
 from .model_architecture import SASRec, EASE
 
 import torch
 
-VAL_TO_IDX_DATA_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Server/data'
 MODEL_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Experiment/model'
 
-with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'problemId_to_idx.json'), 'r', encoding = 'utf-8') as f:
-    problem_id2idx = json.load(f)
-
-with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'idx_to_problemId.json'), 'r', encoding = 'utf-8') as f:
-    idx2problem_id = json.load(f)
-
 # item2vec
-# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq'
-# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-problem_course_seq'
-# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-problem_course_seq-32'
-# 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-vs128.model'
-item2vec = Word2Vec.load(os.path.join(MODEL_PATH, 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-vs128.model'))
-
-vectors = []
-for idx in range(len(problem_id2idx)):
-    vectors.append(item2vec.wv[idx2problem_id[str(idx)]])
-vectors = np.array(vectors)
+with open(os.path.join(MODEL_PATH, 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-vs128-vector.pickle'), 'rb') as file: 
+    load_item2vec = pickle.load(file)
 
 ## Transformer
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
-num_assessmentItemID = len(problem_id2idx)
+num_assessmentItemID = 23090
 hidden_units = 128
 num_heads = 8
 num_layers = 1
@@ -104,14 +87,14 @@ def thompson_sampling(model_type_click_dict):
     elif idx == 2: return 'pretrained_user_seq'
 
 def ease_model(problem_seq):
-    mat = torch.zeros(size = (1, len(problem_id2idx)))
+    mat = torch.zeros(size = (1, num_assessmentItemID))
     mat[0, problem_seq] = 1
     output = ease.predict(mat)[0].cpu().numpy()
     ease.clear_memory()
     return output
 
 def item2vec_model(problem_seq):
-    cos_arr = cosine_similarity(item2vec.wv[idx2problem_id[str(problem_seq[0])]].reshape(1, -1), vectors)[0]
+    cos_arr = cosine_similarity(load_item2vec[problem_seq[0]].reshape(1, -1), load_item2vec)[0]
     return cos_arr
 
 def user_seq_model(problem_seq):
@@ -127,31 +110,3 @@ def pretrained_user_seq_model(problem_seq):
     with torch.no_grad():
         output = pretrained_user_seq(input)[0].cpu().numpy()
     return output
-
-def output_fitering(output, fiterling_list):
-    output[fiterling_list] = -np.Inf
-    return output
-
-def output_sorted(output, top = 10):
-    output = output.argsort()[::-1][:top]
-    return output
-
-def preprocessing_seq_problem_id2idx(problem_seq):
-    return_problem_seq = []
-    for problem_id in problem_seq:
-        try:
-            return_problem_seq.append(problem_id2idx[problem_id])
-        except:
-            continue
-    
-    return return_problem_seq
-
-def preprocessing_seq_idx2problem_id(output):
-    return_problem_seq = []
-    for idx in output:
-        try:
-            return_problem_seq.append(idx2problem_id[str(idx)])
-        except:
-            continue
-    
-    return return_problem_seq

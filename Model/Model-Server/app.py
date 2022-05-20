@@ -2,7 +2,8 @@
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from model.model import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model
+from model.model import thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model
+from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
