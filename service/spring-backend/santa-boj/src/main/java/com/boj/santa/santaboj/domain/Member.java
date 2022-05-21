@@ -17,10 +17,14 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
-    public static Member createMember(String username, String password){
+    @Column(nullable = false)
+    private String bojId;
+
+    public static Member createMember(String username, String password, String bojId){
         Member member = new Member();
         member.username = username;
         member.password = password;
+        member.bojId = bojId;
         return member;
     }
 }

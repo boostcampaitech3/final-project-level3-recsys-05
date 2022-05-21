@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -26,7 +27,7 @@ public class WebSecurityConfig {
                 .logoutSuccessUrl("/login").deleteCookies("Auth-Token")
                 .and()
                 .authorizeRequests()
-                .mvcMatchers("/", "/css/**", "/scripts/**", "/plugin/**", "/fonts/**", "/login")
+                .mvcMatchers("/", "/css/**", "/scripts/**", "/plugin/**", "/fonts/**", "/login", "nologin")
                 .permitAll()
                 .and()
                 .headers().frameOptions().disable()
@@ -34,27 +35,19 @@ public class WebSecurityConfig {
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedHandler)
                 .and()
-                .sessionManagement() //(4)
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .authorizeRequests()
                 .antMatchers("/result/**", "/logout")
                 .hasAnyAuthority("USER");
-
-
-//                .authorizeRequests()
-//                .antMatchers("/signup")
-//                .authenticated()
-//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                .and()
-//                .antMatchers("/login").hasRole("USER")
-//                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-//                .anyRequest().hasRole("USER")
-//                .and()
-//                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider, loginStatusManager),
-//                        UsernamePasswordAuthenticationFilter.class)
         ;
         return http.build();
+    }
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -15,14 +15,14 @@ class MemberServiceImplTest {
 
     @Test
     void registerTest(){
-        Member member = memberService.registerNewMember("abc", "hello");
+        Member member = memberService.registerNewMember("abc", "hello", "abc");
         Assertions.assertThat(member).isNotNull();
     }
 
     @Test
     void duplicateRegisterTest(){
-        Member member = memberService.registerNewMember("bcd", "hello");
-        Member member2 = memberService.registerNewMember("bcd", "world!");
+        Member member = memberService.registerNewMember("bcd", "hello", "abc");
+        Member member2 = memberService.registerNewMember("bcd", "world!", "abc");
         Assertions.assertThat(member).isNotNull();
         Assertions.assertThat(member2).isNull();
     }

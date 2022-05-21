@@ -17,7 +17,7 @@ class MemberRepositoryImplTest {
 
     @Test
     void saveTest(){
-        Member member = Member.createMember("abc", "mbc");
+        Member member = Member.createMember("abc", "mbc", "abc");
         Member member2 = memberRepository.save(member);
         Member findMember = memberRepository.findByUsername(member2.getUsername());
         Assertions.assertThat(findMember.getUsername()).isEqualTo(member2.getUsername());

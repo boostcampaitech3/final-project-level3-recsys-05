@@ -9,13 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +26,7 @@ import java.util.List;
 public class MemberController {
 
     private final MemberService memberService;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @GetMapping ("/signup")
     public String signUp(Model model){
@@ -39,7 +38,7 @@ public class MemberController {
     @PostMapping ("/signup")
     public String handleSignUp(MemberDTO member, Model model){
         log.info("new member sign up {}", member.getUsername());
-        Member result = memberService.registerNewMember(member.getUsername(), member.getPassword());
+        Member result = memberService.registerNewMember(member.getUsername(), member.getPassword(), member.getBojId());
         if (result == null){
             model.addAttribute("already", 'Y');
             log.warn("already username {} exists", member.getUsername());
@@ -64,7 +63,7 @@ public class MemberController {
 
         Member userByUsername = memberService.findUserByUsername(username);
         if (userByUsername != null) {
-            if (username.equals(userByUsername.getUsername()) && password.equals(userByUsername.getPassword())) {
+            if (username.equals(userByUsername.getUsername()) && bCryptPasswordEncoder.matches(password, userByUsername.getPassword())) {
                 Authentication authentication = new UserAuthentication(username, password, grantedAuthorityList);
                 String token = JwtTokenProvider.generateToken(authentication);
                 Cookie authToken = new Cookie("Auth-Token", token);
@@ -74,10 +73,5 @@ public class MemberController {
             }
         }
         return "redirect:/login";
-    }
-
-    @GetMapping("/result")
-    public String result(){
-        return "result";
     }
 }

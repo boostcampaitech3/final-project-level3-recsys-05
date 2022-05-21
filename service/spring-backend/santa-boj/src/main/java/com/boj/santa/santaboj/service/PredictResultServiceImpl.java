@@ -2,6 +2,7 @@ package com.boj.santa.santaboj.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -41,6 +42,11 @@ public class PredictResultServiceImpl implements PredictResultService{
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.exchange(this.url, HttpMethod.POST, entity, String.class);
 
+        try {
+            PredictResultDTO resultDTO = objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
+        } catch (MismatchedInputException e){
+            log.error("not found user in boj [{}]", username);
+        }
 
         return objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
     }
