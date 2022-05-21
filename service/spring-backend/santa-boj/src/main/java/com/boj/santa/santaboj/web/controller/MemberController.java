@@ -2,6 +2,8 @@ package com.boj.santa.santaboj.web.controller;
 
 import com.boj.santa.santaboj.domain.entity.Member;
 import com.boj.santa.santaboj.domain.service.MemberService;
+import com.boj.santa.santaboj.exceptions.SolvedAcNotFoundException;
+import com.boj.santa.santaboj.exceptions.UsernameAlreadyExistException;
 import com.boj.santa.santaboj.web.security.JwtTokenProvider;
 import com.boj.santa.santaboj.web.security.UserAuthentication;
 import lombok.RequiredArgsConstructor;
@@ -37,14 +39,19 @@ public class MemberController {
 
     @PostMapping ("/signup")
     public String handleSignUp(MemberDTO member, Model model){
-        log.info("new member sign up {}", member.getUsername());
-        Member result = memberService.registerNewMember(member.getUsername(), member.getPassword(), member.getBojId());
-        if (result == null){
+        log.info("trying to sign up {}", member.getUsername());
+        try {
+            Member result = memberService.registerNewMember(member.getUsername(), member.getPassword(), member.getBojId());
+        } catch (SolvedAcNotFoundException e) {
+            log.error("no solved ac user found");
+            return "redirect:signup";
+        } catch (UsernameAlreadyExistException e){
+            log.error("[{}] username has been already used", member.getBojId());
             model.addAttribute("already", 'Y');
-            log.warn("already username {} exists", member.getUsername());
             model.addAttribute("already", 'Y');
-            return "signup";
+            return "redirect:signup";
         }
+
         log.info("{} member sign up successfully", member.getUsername());
         model.addAttribute("already", 'N');
         return "redirect:/";
