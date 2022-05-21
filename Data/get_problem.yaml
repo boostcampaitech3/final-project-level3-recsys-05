@@ -1,0 +1,17 @@
+# 데이터 경로
+data_path : "/Users/yj/Dropbox/1. 유정/8. BoostcampAI/Level2-AZDKS/Santa-BOJ/"
+
+init_url : https://www.acmicpc.net/problem/
+headers:
+  {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
+  }
+
+# 저장할 파일명
+error_file : error_problem
+file_name : problem_meta    # save file name
+
+
+# -- problem num -- 
+start : 25150
+end : 25200
