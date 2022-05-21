@@ -1,6 +1,6 @@
-package com.boj.santa.santaboj.service;
+package com.boj.santa.santaboj.domain.service;
 
-import com.boj.santa.santaboj.domain.Member;
+import com.boj.santa.santaboj.domain.entity.Member;
 
 public interface MemberService {
     Member registerNewMember(String username, String password, String bojId);

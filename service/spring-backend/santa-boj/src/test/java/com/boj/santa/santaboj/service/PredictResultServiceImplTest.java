@@ -1,13 +1,14 @@
 package com.boj.santa.santaboj.service;
 
+import com.boj.santa.santaboj.domain.service.PredictResultDTO;
+import com.boj.santa.santaboj.domain.service.PredictResultService;
+import com.boj.santa.santaboj.domain.service.PredictResultServiceImpl;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.transaction.Transactional;
 import java.net.MalformedURLException;
-import java.util.List;
 
 
 class PredictResultServiceImplTest {

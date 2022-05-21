@@ -1,4 +1,4 @@
-package com.boj.santa.santaboj.service;
+package com.boj.santa.santaboj.domain.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,6 +46,7 @@ public class PredictResultServiceImpl implements PredictResultService{
             PredictResultDTO resultDTO = objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
         } catch (MismatchedInputException e){
             log.error("not found user in boj [{}]", username);
+            return null;
         }
 
         return objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);

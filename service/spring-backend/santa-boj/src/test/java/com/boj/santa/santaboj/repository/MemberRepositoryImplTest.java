@@ -1,6 +1,7 @@
 package com.boj.santa.santaboj.repository;
 
-import com.boj.santa.santaboj.domain.Member;
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.repository.MemberRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

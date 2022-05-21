@@ -1,17 +1,15 @@
 package com.boj.santa.santaboj.web.controller;
 
-import com.boj.santa.santaboj.domain.Member;
-import com.boj.santa.santaboj.service.MemberService;
-import com.boj.santa.santaboj.service.PredictResultDTO;
-import com.boj.santa.santaboj.service.PredictResultService;
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.service.MemberService;
+import com.boj.santa.santaboj.domain.service.PredictResultDTO;
+import com.boj.santa.santaboj.domain.service.PredictResultService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.net.MalformedURLException;

@@ -1,4 +1,4 @@
-package com.boj.santa.santaboj.service;
+package com.boj.santa.santaboj.domain.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,6 +1,6 @@
-package com.boj.santa.santaboj.repository;
+package com.boj.santa.santaboj.domain.repository;
 
-import com.boj.santa.santaboj.domain.Member;
+import com.boj.santa.santaboj.domain.entity.Member;
 
 public interface MemberRepository {
     Member save(Member member);

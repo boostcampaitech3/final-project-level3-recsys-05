@@ -1,7 +1,7 @@
 package com.boj.santa.santaboj.web.controller;
 
-import com.boj.santa.santaboj.domain.Member;
-import com.boj.santa.santaboj.service.MemberService;
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.service.MemberService;
 import com.boj.santa.santaboj.web.security.JwtTokenProvider;
 import com.boj.santa.santaboj.web.security.UserAuthentication;
 import lombok.RequiredArgsConstructor;

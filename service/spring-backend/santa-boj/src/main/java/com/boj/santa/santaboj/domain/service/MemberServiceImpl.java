@@ -1,7 +1,7 @@
-package com.boj.santa.santaboj.service;
+package com.boj.santa.santaboj.domain.service;
 
-import com.boj.santa.santaboj.domain.Member;
-import com.boj.santa.santaboj.repository.MemberRepository;
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;

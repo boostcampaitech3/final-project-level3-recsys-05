@@ -1,11 +1,11 @@
 package com.boj.santa.santaboj.service;
 
-import com.boj.santa.santaboj.domain.Member;
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.service.MemberService;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
 @SpringBootTest
 class MemberServiceImplTest {
