@@ -14,7 +14,32 @@
         <a class="logo" href="/">Home</a>
     </div>
 </div>
-hello world!
+<div class='hello'><span style="color: royalblue" th:text="${username}">username</span>님의 문제 추천 결과!🎅</div>
+<div class='result_wrapper'>
+    <div class="element_wrapper">
+        <div class="explain">필터링 되지 않은 추천 List</div>
+        <ul th:each="item: ${predictResult.nonFilteringOutput}">
+            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
+                <li class="result_element" th:text="${item}">item</li>
+            </a>
+        </ul>
+    </div>
+    <div class="element_wrapper">
+        <div class="explain">최근 풀이에 속하는 문제가 필터링된 추천 List</div>
+        <ul th:each="item: ${predictResult.latelyFilteringOutput}">
+            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/{{ item }}">
+                <li class="result_element" th:text="${item}">item</li>
+            </a>
+        </ul>
+    </div>
+    <div class="element_wrapper">
+        <div class="explain">지금 까지 푼 모든 문제가 필터링된 추천 List</div>
+        <ul th:each="item: ${predictResult.totalFilteringOutput}">
+            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/{{ item }}">
+                <li class="result_element" th:text="${item}">item</li>
+            </a>
+        </ul>
+    </div>
 </div>
 </body>
 </html>

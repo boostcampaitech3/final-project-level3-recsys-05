@@ -29,10 +29,15 @@
   anonymous 님 환영합니다.
 </div>
 <div class='username_wrapper'>
-  <form action= "nologin" method='GET'>
-    <input class="username_input_box" type="text" placeholder="백준 username" name="username">
+  <form th:if="${principal} == 'anonymousUser'" action= "nologin" method='GET'>
+    <input class="username_input_box" type="text" placeholder="백준 username" name="bojId">
     <button class="username_submitbutton" type="submit">submit</button>
   </form>
+  <a href="/result">
+    <div th:if="${principal} != 'anonymousUser'">
+      맞춤추천 확인
+    </div>
+  </a>
 </div>
 </body>
 </html>

@@ -20,6 +20,7 @@
         <span th:if="${already} == 'Y'">이미 존재하는 username 입니다.</span>
         <input th:if="${already} == 'Y'" style="border: 2px solid red;" class="username_input_box" type="text" placeholder="username" name="username">
         <input class="username_input_box" type="password" placeholder="password" name="password">
+        <input class="username_input_box" type="text" placeholder="백준ID" name="bojId">
         <button class="username_submitbutton" type="submit">signup</button>
     </form>
 </div>
