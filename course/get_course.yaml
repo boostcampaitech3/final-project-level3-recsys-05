@@ -1,0 +1,20 @@
+# 데이터 경로
+data_path : "/Users/yj/Dropbox/1. 유정/8. BoostcampAI/Level2-AZDKS/Santa-BOJ/"
+
+# init_url : https://www.acmicpc.net/problem/
+headers:
+  {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.54 Safari/537.36",
+  }
+
+
+# -- course page range -- 
+start : 1
+end : 47
+
+# -- course-codeplus page range -- 
+codeplus_start : 1
+codeplus_end : 3
+
+
+# -- course-detail
