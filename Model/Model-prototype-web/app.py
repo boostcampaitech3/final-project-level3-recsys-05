@@ -83,8 +83,9 @@ def result():
             with open(os.path.join(log_path, log_file_name), "w") as json_file:
                 json.dump(log, json_file)
 
-        total_content = ''
+        total_content = f"<p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p> <p> 당신이 지금까지 선호 했던 유형: {'/'.join(res['tag']['total_preference_tags'])} </p>"
 
+        res = res['model']
         for model_type in res.keys():
             item_list = res[model_type]
             if isinstance(item_list, str):
@@ -123,7 +124,6 @@ def vote():
             log = json.load(f)
 
         log[request.form['model_vote']] += 1
-        print(log)
         
         with open(os.path.join(log_path, log_file_name), "w") as json_file:
             json.dump(log, json_file)
@@ -131,5 +131,6 @@ def vote():
         return render_template('base.html', contents = f''' <div class="content"> <h1> {request.form['model_vote']} 감사합니다 </h1> </div>''')
 
 if __name__ == '__main__':
+    # app.run(debug = True)
     app.run(host='0.0.0.0', debug = False, port = 30001)
 

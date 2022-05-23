@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from attr import field, fields_dict
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
 from model.model import thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model
-from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted
+from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, serch_best_tag
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -109,11 +110,24 @@ santa_bacek_joon_model_test_api_fields = santa_bacek_joon_model_test_api.model('
     'username': fields.String(description='검색을 위한 user-ID', required=True, example = 'ID'),
 })
 
-santa_bacek_joon_model_test_api_returns = santa_bacek_joon_model_test_api.model('Model-Test-Output', {  # Model 객체 생성
-    'item2vec': fields.String(description='item2vec 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
-    'user_seq': fields.String(description='user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
-    'pretrained_user_seq': fields.String(description='pretrained_user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
-    'ease': fields.String(description='ease 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+model_output = santa_bacek_joon_model_test_api.model(
+    'model', {
+        'item2vec': fields.String(description='item2vec 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+        'user_seq': fields.String(description='user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+        'pretrained_user_seq': fields.String(description='pretrained_user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+    }
+)
+
+tag_output = santa_bacek_joon_model_test_api.model(
+    'tag', {
+        'lately_preference_tags': fields.String(description='최근에 푼 문제 리스트로 파악된 선호', required=True, example = "['구현', '수학'....]"),
+        'total_preference_tags': fields.String(description='지금 까지 푼 모든 문제 리스트로 파악된 선호', required=True, example = "['구현', '수학'....]"),
+    }
+)
+
+santa_bacek_joon_model_test_api_returns = santa_bacek_joon_model_test_api.model('Model-Test-Output', {
+        'model' : fields.Nested(model_output),
+        'tag' : fields.Nested(tag_output),
 })
 
 @santa_bacek_joon_model_test_api.route('/')
@@ -128,12 +142,16 @@ class SantaBacekJoonApiModelTestServer(Resource):
         user_seq = 'Not-Found-Key'
         pretrained_user_seq = 'Not-Found-Key'
         ease = 'Not-Found-Key'
+        lately_preference_tags = 'Not-Found-Key'
+        total_preference_tags = 'Not-Found-Key'
 
         if request.json['key'] == 123456:
             item2vec = 'Not-Found-User'
             user_seq = 'Not-Found-User'
             pretrained_user_seq = 'Not-Found-User'
             ease = 'Not-Found-User'
+            lately_preference_tags = 'Not-Found-User'
+            total_preference_tags = 'Not-Found-User'
 
             # 백준 아이디에 따른 추가 데이터 수집
             # (1) 백준 아이디 기준 지금 까지 푼 문제 리스트 수집
@@ -144,6 +162,8 @@ class SantaBacekJoonApiModelTestServer(Resource):
                 user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 ease = 'Not-Found-User-Lately-Solved-Problem'
+                lately_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
+                total_preference_tags = 'Not-Found-User-Lately-Solved-Problem'      
 
                 # 백준 아이디에 따른 추가 데이터 수집
                 # (2) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
@@ -176,12 +196,27 @@ class SantaBacekJoonApiModelTestServer(Resource):
                         ease = output_sorted(output=ease, top=10)
                         ease = preprocessing_seq_idx2problem_id(ease)
 
+                        lately_preference_tags = serch_best_tag(lately_solved_problem_seq, top = 3)
+                        total_preference_tags = serch_best_tag(total_solved_problem_seq, top = 3)
+
         datas = {
-            'item2vec'           : item2vec,
-            'user_seq'           : user_seq,
-            'pretrained_user_seq': pretrained_user_seq,
-            'ease'               : ease,
+            
+            'model' : {
+                'item2vec'           : item2vec,
+                'user_seq'           : user_seq,
+                'pretrained_user_seq': pretrained_user_seq,
+                'ease'               : ease,
+            },
+
+            'tag' : {
+                'lately_preference_tags' : lately_preference_tags,
+                'total_preference_tags' : total_preference_tags,
+            },
+
+            'rank' : {
+
             }
+        }
 
         return datas
 
