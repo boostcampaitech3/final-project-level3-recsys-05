@@ -83,7 +83,11 @@ def result():
             with open(os.path.join(log_path, log_file_name), "w") as json_file:
                 json.dump(log, json_file)
 
-        total_content = f"<p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p> <p> 당신이 지금까지 선호 했던 유형: {'/'.join(res['tag']['total_preference_tags'])} </p>"
+        total_content = f'''
+        <p> {request.form['user_id']} </p>
+        <p> 당신의 수준: {res['rank']} </p>
+        <p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p> 
+        <p> 당신이 지금까지 선호 했던 유형: {'/'.join(res['tag']['total_preference_tags'])} </p>'''
 
         res = res['model']
         for model_type in res.keys():
@@ -91,12 +95,15 @@ def result():
             if isinstance(item_list, str):
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 존재하지 않는 아이디 입니다. </h1>" + '''</div>''')
 
+            item_list_idx = list(map(str, item_list))
             item_list = ",".join(list(map(str, item_list)))
             url = f"https://solved.ac/api/v3/problem/lookup?problemIds={item_list}"
             headers = {"Content-Type": "application/json"}
             response = requests.request("GET", url, headers=headers)
             item_list = response.json()
-
+            
+            item_list = sorted(item_list, key = lambda x: item_list_idx.index(str(x['problemId'])))
+            
             content = f'''
             <div class="item-list">
             <input type="radio" id="{model_type}" name="model_vote" value="{model_type}">

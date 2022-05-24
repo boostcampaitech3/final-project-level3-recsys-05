@@ -3,8 +3,8 @@ from attr import field, fields_dict
 from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
-from model.model import thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model
-from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, serch_best_tag
+from model.model import thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model, multi_modal_user_seq_model
+from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, serch_best_tag, serch_rank
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -112,9 +112,11 @@ santa_bacek_joon_model_test_api_fields = santa_bacek_joon_model_test_api.model('
 
 model_output = santa_bacek_joon_model_test_api.model(
     'model', {
-        'item2vec': fields.String(description='item2vec 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
         'user_seq': fields.String(description='user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
         'pretrained_user_seq': fields.String(description='pretrained_user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+        'multi_modal_user_seq': fields.String(description='multi_modal_user_seq 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"), 
+        'ease': fields.String(description='ease 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
+        'pretrained_user_seq_and_ease': fields.String(description='pretrained_user_seq의 필터링으로 ease를 사용하고 지금 까지 푼 모든 문제 리스트가 필터링된 추천 List', required=True, example = "['1000', '1001'....]"),
     }
 )
 
@@ -128,6 +130,7 @@ tag_output = santa_bacek_joon_model_test_api.model(
 santa_bacek_joon_model_test_api_returns = santa_bacek_joon_model_test_api.model('Model-Test-Output', {
         'model' : fields.Nested(model_output),
         'tag' : fields.Nested(tag_output),
+        'rank' : fields.String(description='최근 문제 푼 리스트 + 전체 문제 푼 리스트를 이용하여 파악된 수준', required=True, example = "'Silver III'"),
 })
 
 @santa_bacek_joon_model_test_api.route('/')
@@ -138,32 +141,48 @@ class SantaBacekJoonApiModelTestServer(Resource):
     def post(self):
         """각 모델에 따른 추천 결과를 반환합니다."""
 
-        item2vec = 'Not-Found-Key'
+        multi_modal_user_seq_and_ease = 'Not-Found-Key'
+        pretrained_user_seq_and_ease = 'Not-Found-Key'
         user_seq = 'Not-Found-Key'
         pretrained_user_seq = 'Not-Found-Key'
+        multi_modal_user_seq = 'Not-Found-Key'
         ease = 'Not-Found-Key'
+
         lately_preference_tags = 'Not-Found-Key'
         total_preference_tags = 'Not-Found-Key'
+        
+        rank = 'Not-Found-Key'
 
         if request.json['key'] == 123456:
-            item2vec = 'Not-Found-User'
+            multi_modal_user_seq_and_ease = 'Not-Found-User'
+            pretrained_user_seq_and_ease = 'Not-Found-User'
             user_seq = 'Not-Found-User'
             pretrained_user_seq = 'Not-Found-User'
+            multi_modal_user_seq = 'Not-Found-User'
             ease = 'Not-Found-User'
+            
             lately_preference_tags = 'Not-Found-User'
             total_preference_tags = 'Not-Found-User'
+            
+            rank = 'Not-Found-User'
+
 
             # 백준 아이디에 따른 추가 데이터 수집
             # (1) 백준 아이디 기준 지금 까지 푼 문제 리스트 수집
             user_id = request.json['username']
             total_solved_problem_seq = total_solved_problem_seq_collection(user_id)
             if total_solved_problem_seq != 'Not-Found-User':
-                item2vec = 'Not-Found-User-Lately-Solved-Problem'
+                multi_modal_user_seq_and_ease = 'Not-Found-User-Lately-Solved-Problem'
+                pretrained_user_seq_and_ease = 'Not-Found-User-Lately-Solved-Problem'
                 user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
+                multi_modal_user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 ease = 'Not-Found-User-Lately-Solved-Problem'
+                
                 lately_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
-                total_preference_tags = 'Not-Found-User-Lately-Solved-Problem'      
+                total_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
+                
+                rank = 'Not-Found-User-Lately-Solved-Problem'
 
                 # 백준 아이디에 따른 추가 데이터 수집
                 # (2) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
@@ -176,10 +195,21 @@ class SantaBacekJoonApiModelTestServer(Resource):
                         # 백준 아이디 지금 까지 푼 문제 리스트 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
                         total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
 
-                        item2vec = item2vec_model(lately_solved_problem_seq)
-                        item2vec = output_fitering(output=item2vec, fiterling_list=total_solved_problem_seq)
-                        item2vec = output_sorted(output=item2vec, top=10)
-                        item2vec = preprocessing_seq_idx2problem_id(item2vec)
+                        multi_modal_user_seq_and_ease = multi_modal_user_seq_model(lately_solved_problem_seq)
+                        multi_modal_user_seq_and_ease = output_fitering(output=multi_modal_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
+                        multi_modal_user_seq_and_ease = output_sorted(output=multi_modal_user_seq_and_ease, top=15).tolist()
+                        multi_modal_user_seq_and_ease = ease_model(multi_modal_user_seq_and_ease)
+                        multi_modal_user_seq_and_ease = output_fitering(output=multi_modal_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
+                        multi_modal_user_seq_and_ease = output_sorted(output=multi_modal_user_seq_and_ease, top=10)
+                        multi_modal_user_seq_and_ease = preprocessing_seq_idx2problem_id(multi_modal_user_seq_and_ease)
+
+                        pretrained_user_seq_and_ease = pretrained_user_seq_model(lately_solved_problem_seq)
+                        pretrained_user_seq_and_ease = output_fitering(output=pretrained_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
+                        pretrained_user_seq_and_ease = output_sorted(output=pretrained_user_seq_and_ease, top=15).tolist()
+                        pretrained_user_seq_and_ease = ease_model(pretrained_user_seq_and_ease)
+                        pretrained_user_seq_and_ease = output_fitering(output=pretrained_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
+                        pretrained_user_seq_and_ease = output_sorted(output=pretrained_user_seq_and_ease, top=10)
+                        pretrained_user_seq_and_ease = preprocessing_seq_idx2problem_id(pretrained_user_seq_and_ease)
 
                         user_seq = user_seq_model(lately_solved_problem_seq)
                         user_seq = output_fitering(output=user_seq, fiterling_list=total_solved_problem_seq)
@@ -191,6 +221,11 @@ class SantaBacekJoonApiModelTestServer(Resource):
                         pretrained_user_seq = output_sorted(output=pretrained_user_seq, top=10)
                         pretrained_user_seq = preprocessing_seq_idx2problem_id(pretrained_user_seq)
 
+                        multi_modal_user_seq = multi_modal_user_seq_model(lately_solved_problem_seq)
+                        multi_modal_user_seq = output_fitering(output=multi_modal_user_seq, fiterling_list=total_solved_problem_seq)
+                        multi_modal_user_seq = output_sorted(output=multi_modal_user_seq, top=10)
+                        multi_modal_user_seq = preprocessing_seq_idx2problem_id(multi_modal_user_seq)
+
                         ease = ease_model(total_solved_problem_seq)
                         ease = output_fitering(output=ease, fiterling_list=total_solved_problem_seq)
                         ease = output_sorted(output=ease, top=10)
@@ -199,23 +234,25 @@ class SantaBacekJoonApiModelTestServer(Resource):
                         lately_preference_tags = serch_best_tag(lately_solved_problem_seq, top = 3)
                         total_preference_tags = serch_best_tag(total_solved_problem_seq, top = 3)
 
+                        rank = serch_rank(total_solved_problem_seq, lately_solved_problem_seq)
+
         datas = {
             
             'model' : {
-                'item2vec'           : item2vec,
-                'user_seq'           : user_seq,
-                'pretrained_user_seq': pretrained_user_seq,
-                'ease'               : ease,
+                'multi_modal_user_seq_and_ease': multi_modal_user_seq_and_ease,
+                'pretrained_user_seq_and_ease' : pretrained_user_seq_and_ease,
+                'user_seq'                     : user_seq,
+                'pretrained_user_seq'          : pretrained_user_seq,
+                'multi_modal_user_seq'         : multi_modal_user_seq,
+                'ease'                         : ease,
             },
 
             'tag' : {
                 'lately_preference_tags' : lately_preference_tags,
-                'total_preference_tags' : total_preference_tags,
+                'total_preference_tags'  : total_preference_tags,
             },
 
-            'rank' : {
-
-            }
+            'rank' : rank,
         }
 
         return datas

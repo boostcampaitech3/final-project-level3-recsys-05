@@ -4,7 +4,7 @@ import numpy as np
 from scipy.stats import beta
 from sklearn.metrics.pairwise import cosine_similarity
 
-from .model_architecture import SASRec, EASE
+from .model_architecture import SASRec, MultiModalSASRec, EASE
 
 import torch
 
@@ -33,8 +33,8 @@ user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-# User-Seq-Transformer
-# new-User-Seq-Transformer
+## User-Seq-Transformer
+## new-User-Seq-Transformer
 user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-User-Seq-Transformer' + '.pt')))
 
 # pretrained_user_seq
@@ -46,9 +46,21 @@ pretrained_user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-# User-Seq-Transformer
-# new-Item2Vec-pretrained-User-Seq-Transformer
+## User-Seq-Transformer
+## new-Item2Vec-pretrained-User-Seq-Transformer
 pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-Item2Vec-pretrained-User-Seq-Transformer' + '.pt')))
+
+# Mulit-Modal-User-Seq-Transformer
+multi_modal_user_seq = MultiModalSASRec(
+        num_assessmentItemID = num_assessmentItemID,
+        hidden_units = hidden_units,
+        num_heads = num_heads,
+        num_layers = num_layers,
+        dropout_rate = dropout_rate
+        ).to(device)
+
+## multi-modal-User-Seq-Transformer
+multi_modal_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'multi-modal-User-Seq-Transformer' + '.pt')))
 
 # ease
 class MyCoustomUnpickler(pickle.Unpickler):
@@ -109,4 +121,11 @@ def pretrained_user_seq_model(problem_seq):
     input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
     with torch.no_grad():
         output = pretrained_user_seq(input)[0].cpu().numpy()
+    return output
+
+def multi_modal_user_seq_model(problem_seq):
+    multi_modal_user_seq.eval()
+    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
+    with torch.no_grad():
+        output = multi_modal_user_seq(input)[0].cpu().numpy()
     return output

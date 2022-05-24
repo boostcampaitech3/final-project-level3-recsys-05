@@ -149,6 +149,67 @@ class SASRec(nn.Module):
 
         return output
 
+class MultiModalSASRec(nn.Module):
+    def __init__(
+        self, 
+        num_assessmentItemID,
+        hidden_units,
+        num_heads, 
+        num_layers, 
+        dropout_rate):
+        super(MultiModalSASRec, self).__init__()
+
+        self.item2vec_emb = nn.Embedding(num_assessmentItemID + 1, hidden_units, padding_idx = 0) # 문항에 대한 정보
+        self.assessmentItemID_emb = nn.Embedding(num_assessmentItemID + 1, hidden_units, padding_idx = 0) # 문항에 대한 정보
+        self.emb = nn.Sequential(
+            nn.Linear(hidden_units * 2, hidden_units),
+            nn.LayerNorm(hidden_units, eps=1e-6)
+        )
+
+        self.blocks = nn.ModuleList([SASRecBlock(num_heads, hidden_units, dropout_rate) for _ in range(num_layers)])
+
+        self.lstm = nn.LSTM(
+            input_size = hidden_units,
+            hidden_size = hidden_units,
+            num_layers = num_layers,
+            batch_first = True,
+            bidirectional = False,
+            dropout = dropout_rate,
+            )
+        
+        self.predict_layer = nn.Sequential(
+            nn.Linear(hidden_units, num_assessmentItemID)
+        )
+        
+        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
+    
+    
+    def forward(self, input):
+        """
+        assessmentItem : (batch_size, max_len)
+        """
+        assessmentItem = input['assessmentItem']
+
+        # masking
+        mask_pad = torch.BoolTensor(assessmentItem > 0).unsqueeze(1).unsqueeze(1) # (batch_size, 1, 1, max_len)
+        mask_time = (1 - torch.triu(torch.ones((1, 1, assessmentItem.size(1), assessmentItem.size(1))), diagonal=1)).bool() # (batch_size, 1, max_len, max_len)
+        mask = (mask_pad & mask_time).to(self.device) # (batch_size, 1, max_len, max_len)
+
+        assessmentItem_emb = self.assessmentItemID_emb(assessmentItem.to(self.device))
+        item2vec_emb = self.item2vec_emb(assessmentItem.to(self.device))
+        
+        emb = torch.concat([assessmentItem_emb, item2vec_emb], dim = -1)
+        emb = self.emb(emb)
+
+        for block in self.blocks:
+            emb, attn_dist = block(emb, mask)
+
+        emb, _ = self.lstm(emb)
+        
+        output = self.predict_layer(emb[:, -1])
+
+        return output
+
 
 class EASE():
     def __init__(self, reg = 1000):

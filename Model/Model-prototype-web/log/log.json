@@ -1,1 +1,1 @@
-{"item2vec": 1, "user_seq": 5, "pretrained_user_seq": 8, "ease": 1}
+{"item2vec": 2, "user_seq": 6, "pretrained_user_seq": 8, "multi_modal_user_seq": 0, "ease": 4, "pretrained_user_seq_and_ease": 1, "multi_modal_user_seq_and_ease" : 0}
