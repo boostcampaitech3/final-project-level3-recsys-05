@@ -4,7 +4,11 @@ from flask import Flask, request
 from flask_restx import Api, Resource, fields
 from crawling.baekjoon import lately_solved_problem_seq_collection, total_solved_problem_seq_collection
 from model.model import thompson_sampling, item2vec_model, user_seq_model, pretrained_user_seq_model, ease_model, multi_modal_user_seq_model
-from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id, output_fitering, output_sorted, serch_best_tag, serch_rank
+from model.model import clean_item2vec_model, clean_user_seq_model, clean_pretrained_user_seq_model, clean_ease_model, clean_multi_modal_user_seq_model
+from preprocessing.preprocessing import output_fitering, output_sorted, serch_best_tag, serch_rank
+from preprocessing.preprocessing import preprocessing_seq_problem_id2idx, preprocessing_seq_idx2problem_id
+from preprocessing.preprocessing import clean_preprocessing_seq_problem_id2idx, clean_preprocessing_seq_idx2problem_id
+
 
 app = Flask(__name__)
 api = Api(app, title = "SantaBaekjoon's API Server", description = "SantaBaekjoon's Recomeder Problem-id list API", version = "0.1")
@@ -140,49 +144,61 @@ class SantaBacekJoonApiModelTestServer(Resource):
     @santa_bacek_joon_model_test_api.response(200, 'Success', santa_bacek_joon_model_test_api_returns)
     def post(self):
         """각 모델에 따른 추천 결과를 반환합니다."""
+        lately_preference_tags = 'Not-Found-Key'
+        total_preference_tags = 'Not-Found-Key'
+        rank = 'Not-Found-Key'
 
-        multi_modal_user_seq_and_ease = 'Not-Found-Key'
-        pretrained_user_seq_and_ease = 'Not-Found-Key'
+        item2vec = 'Not-Found-Key'
+        ease = 'Not-Found-Key'
         user_seq = 'Not-Found-Key'
         pretrained_user_seq = 'Not-Found-Key'
         multi_modal_user_seq = 'Not-Found-Key'
-        ease = 'Not-Found-Key'
 
-        lately_preference_tags = 'Not-Found-Key'
-        total_preference_tags = 'Not-Found-Key'
-        
-        rank = 'Not-Found-Key'
+        clean_item2vec = 'Not-Found-Key'
+        clean_ease = 'Not-Found-Key'
+        clean_user_seq = 'Not-Found-Key'
+        clean_pretrained_user_seq = 'Not-Found-Key'
+        clean_multi_modal_user_seq = 'Not-Found-Key'
 
         if request.json['key'] == 123456:
-            multi_modal_user_seq_and_ease = 'Not-Found-User'
-            pretrained_user_seq_and_ease = 'Not-Found-User'
+
+            lately_preference_tags = 'Not-Found-User'
+            total_preference_tags = 'Not-Found-User'
+            rank = 'Not-Found-User'
+
+            item2vec = 'Not-Found-User'
+            ease = 'Not-Found-User'
             user_seq = 'Not-Found-User'
             pretrained_user_seq = 'Not-Found-User'
             multi_modal_user_seq = 'Not-Found-User'
-            ease = 'Not-Found-User'
-            
-            lately_preference_tags = 'Not-Found-User'
-            total_preference_tags = 'Not-Found-User'
-            
-            rank = 'Not-Found-User'
 
+            clean_item2vec = 'Not-Found-User'
+            clean_ease = 'Not-Found-User'
+            clean_user_seq = 'Not-Found-User'
+            clean_pretrained_user_seq = 'Not-Found-User'
+            clean_multi_modal_user_seq = 'Not-Found-User'
 
             # 백준 아이디에 따른 추가 데이터 수집
             # (1) 백준 아이디 기준 지금 까지 푼 문제 리스트 수집
             user_id = request.json['username']
             total_solved_problem_seq = total_solved_problem_seq_collection(user_id)
             if total_solved_problem_seq != 'Not-Found-User':
-                multi_modal_user_seq_and_ease = 'Not-Found-User-Lately-Solved-Problem'
-                pretrained_user_seq_and_ease = 'Not-Found-User-Lately-Solved-Problem'
+
+                lately_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
+                total_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
+                rank = 'Not-Found-User-Lately-Solved-Problem'
+
+                item2vec = 'Not-Found-User-Lately-Solved-Problem'
+                ease = 'Not-Found-User-Lately-Solved-Problem'
                 user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
                 multi_modal_user_seq = 'Not-Found-User-Lately-Solved-Problem'
-                ease = 'Not-Found-User-Lately-Solved-Problem'
-                
-                lately_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
-                total_preference_tags = 'Not-Found-User-Lately-Solved-Problem'
-                
-                rank = 'Not-Found-User-Lately-Solved-Problem'
+
+                clean_item2vec = 'Not-Found-User-Lately-Solved-Problem'
+                clean_ease = 'Not-Found-User-Lately-Solved-Problem'
+                clean_user_seq = 'Not-Found-User-Lately-Solved-Problem'
+                clean_pretrained_user_seq = 'Not-Found-User-Lately-Solved-Problem'
+                clean_multi_modal_user_seq = 'Not-Found-User-Lately-Solved-Problem'
 
                 # 백준 아이디에 따른 추가 데이터 수집
                 # (2) 백준 아이디 기준 최근 20개 문제 수집 (맞았습니다.)
@@ -190,61 +206,84 @@ class SantaBacekJoonApiModelTestServer(Resource):
 
                 if lately_solved_problem_seq:
                     # 모델 인풋 데이터 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
-                    lately_solved_problem_seq = preprocessing_seq_problem_id2idx(lately_solved_problem_seq)
-                    if lately_solved_problem_seq:
+                    pre_lately_solved_problem_seq = preprocessing_seq_problem_id2idx(lately_solved_problem_seq)
+                    clean_pre_lately_solved_problem_seq = clean_preprocessing_seq_problem_id2idx(lately_solved_problem_seq)
+
+                    if pre_lately_solved_problem_seq:
+
                         # 백준 아이디 지금 까지 푼 문제 리스트 정제 (문제를 idx화 + 존재하지 않는 문제 제거)
-                        total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
+                        pre_total_solved_problem_seq = preprocessing_seq_problem_id2idx(total_solved_problem_seq)
+                        clean_pre_total_solved_problem_seq = clean_preprocessing_seq_problem_id2idx(total_solved_problem_seq)
+                        
+                        # rank + tag
+                        lately_preference_tags = serch_best_tag(pre_lately_solved_problem_seq, top = 3)
+                        total_preference_tags = serch_best_tag(pre_total_solved_problem_seq, top = 3)
+                        rank = serch_rank(pre_total_solved_problem_seq, pre_lately_solved_problem_seq)
 
-                        multi_modal_user_seq_and_ease = multi_modal_user_seq_model(lately_solved_problem_seq)
-                        multi_modal_user_seq_and_ease = output_fitering(output=multi_modal_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
-                        multi_modal_user_seq_and_ease = output_sorted(output=multi_modal_user_seq_and_ease, top=15).tolist()
-                        multi_modal_user_seq_and_ease = ease_model(multi_modal_user_seq_and_ease)
-                        multi_modal_user_seq_and_ease = output_fitering(output=multi_modal_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
-                        multi_modal_user_seq_and_ease = output_sorted(output=multi_modal_user_seq_and_ease, top=10)
-                        multi_modal_user_seq_and_ease = preprocessing_seq_idx2problem_id(multi_modal_user_seq_and_ease)
+                        item2vec = item2vec_model(pre_lately_solved_problem_seq)
+                        item2vec = output_fitering(output=item2vec, fiterling_list=pre_total_solved_problem_seq)
+                        item2vec = output_sorted(output=item2vec, top=5)
+                        item2vec = preprocessing_seq_idx2problem_id(item2vec)
 
-                        pretrained_user_seq_and_ease = pretrained_user_seq_model(lately_solved_problem_seq)
-                        pretrained_user_seq_and_ease = output_fitering(output=pretrained_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
-                        pretrained_user_seq_and_ease = output_sorted(output=pretrained_user_seq_and_ease, top=15).tolist()
-                        pretrained_user_seq_and_ease = ease_model(pretrained_user_seq_and_ease)
-                        pretrained_user_seq_and_ease = output_fitering(output=pretrained_user_seq_and_ease, fiterling_list=total_solved_problem_seq)
-                        pretrained_user_seq_and_ease = output_sorted(output=pretrained_user_seq_and_ease, top=10)
-                        pretrained_user_seq_and_ease = preprocessing_seq_idx2problem_id(pretrained_user_seq_and_ease)
-
-                        user_seq = user_seq_model(lately_solved_problem_seq)
-                        user_seq = output_fitering(output=user_seq, fiterling_list=total_solved_problem_seq)
-                        user_seq = output_sorted(output=user_seq, top=10)
-                        user_seq = preprocessing_seq_idx2problem_id(user_seq)
-
-                        pretrained_user_seq = pretrained_user_seq_model(lately_solved_problem_seq)
-                        pretrained_user_seq = output_fitering(output=pretrained_user_seq, fiterling_list=total_solved_problem_seq)
-                        pretrained_user_seq = output_sorted(output=pretrained_user_seq, top=10)
-                        pretrained_user_seq = preprocessing_seq_idx2problem_id(pretrained_user_seq)
-
-                        multi_modal_user_seq = multi_modal_user_seq_model(lately_solved_problem_seq)
-                        multi_modal_user_seq = output_fitering(output=multi_modal_user_seq, fiterling_list=total_solved_problem_seq)
-                        multi_modal_user_seq = output_sorted(output=multi_modal_user_seq, top=10)
-                        multi_modal_user_seq = preprocessing_seq_idx2problem_id(multi_modal_user_seq)
-
-                        ease = ease_model(total_solved_problem_seq)
-                        ease = output_fitering(output=ease, fiterling_list=total_solved_problem_seq)
-                        ease = output_sorted(output=ease, top=10)
+                        ease = ease_model(pre_lately_solved_problem_seq)
+                        ease = output_fitering(output=ease, fiterling_list=pre_total_solved_problem_seq)
+                        ease = output_sorted(output=ease, top=5)
                         ease = preprocessing_seq_idx2problem_id(ease)
 
-                        lately_preference_tags = serch_best_tag(lately_solved_problem_seq, top = 3)
-                        total_preference_tags = serch_best_tag(total_solved_problem_seq, top = 3)
+                        user_seq = user_seq_model(pre_lately_solved_problem_seq)
+                        user_seq = output_fitering(output=user_seq, fiterling_list=pre_total_solved_problem_seq)
+                        user_seq = output_sorted(output=user_seq, top=5)
+                        user_seq = preprocessing_seq_idx2problem_id(user_seq)
 
-                        rank = serch_rank(total_solved_problem_seq, lately_solved_problem_seq)
+                        pretrained_user_seq = pretrained_user_seq_model(pre_lately_solved_problem_seq)
+                        pretrained_user_seq = output_fitering(output=pretrained_user_seq, fiterling_list=pre_total_solved_problem_seq)
+                        pretrained_user_seq = output_sorted(output=pretrained_user_seq, top=5)
+                        pretrained_user_seq = preprocessing_seq_idx2problem_id(pretrained_user_seq)
 
-        datas = {
-            
+                        multi_modal_user_seq = multi_modal_user_seq_model(pre_lately_solved_problem_seq)
+                        multi_modal_user_seq = output_fitering(output=multi_modal_user_seq, fiterling_list=pre_total_solved_problem_seq)
+                        multi_modal_user_seq = output_sorted(output=multi_modal_user_seq, top=5)
+                        multi_modal_user_seq = preprocessing_seq_idx2problem_id(multi_modal_user_seq)
+
+                        # clean
+                        clean_item2vec = clean_item2vec_model(clean_pre_lately_solved_problem_seq)
+                        clean_item2vec = output_fitering(output=clean_item2vec, fiterling_list=clean_pre_total_solved_problem_seq)
+                        clean_item2vec = output_sorted(output=clean_item2vec, top=5)
+                        clean_item2vec = clean_preprocessing_seq_idx2problem_id(clean_item2vec)
+
+                        clean_ease = clean_ease_model(clean_pre_lately_solved_problem_seq)
+                        clean_ease = output_fitering(output=clean_ease, fiterling_list=clean_pre_total_solved_problem_seq)
+                        clean_ease = output_sorted(output=clean_ease, top=5)
+                        clean_ease = clean_preprocessing_seq_idx2problem_id(clean_ease)
+
+                        clean_user_seq = clean_user_seq_model(clean_pre_lately_solved_problem_seq)
+                        clean_user_seq = output_fitering(output=clean_user_seq, fiterling_list=clean_pre_total_solved_problem_seq)
+                        clean_user_seq = output_sorted(output=clean_user_seq, top=5)
+                        clean_user_seq = clean_preprocessing_seq_idx2problem_id(clean_user_seq)
+
+                        clean_pretrained_user_seq = clean_pretrained_user_seq_model(clean_pre_lately_solved_problem_seq)
+                        clean_pretrained_user_seq = output_fitering(output=clean_pretrained_user_seq, fiterling_list=clean_pre_total_solved_problem_seq)
+                        clean_pretrained_user_seq = output_sorted(output=clean_pretrained_user_seq, top=5)
+                        clean_pretrained_user_seq = clean_preprocessing_seq_idx2problem_id(clean_pretrained_user_seq)
+
+                        clean_multi_modal_user_seq = clean_multi_modal_user_seq_model(clean_pre_lately_solved_problem_seq)
+                        clean_multi_modal_user_seq = output_fitering(output=clean_multi_modal_user_seq, fiterling_list=clean_pre_total_solved_problem_seq)
+                        clean_multi_modal_user_seq = output_sorted(output=clean_multi_modal_user_seq, top=5)
+                        clean_multi_modal_user_seq = clean_preprocessing_seq_idx2problem_id(clean_multi_modal_user_seq)
+
+        datas = {    
             'model' : {
-                'multi_modal_user_seq_and_ease': multi_modal_user_seq_and_ease,
-                'pretrained_user_seq_and_ease' : pretrained_user_seq_and_ease,
+                'item2vec'                     : item2vec,
+                'ease'                         : ease,
                 'user_seq'                     : user_seq,
                 'pretrained_user_seq'          : pretrained_user_seq,
                 'multi_modal_user_seq'         : multi_modal_user_seq,
-                'ease'                         : ease,
+
+                'clean_item2vec'                     : clean_item2vec,
+                'clean_ease'                         : clean_ease,
+                'clean_user_seq'                     : clean_user_seq,
+                'clean_pretrained_user_seq'          : clean_pretrained_user_seq,
+                'clean_multi_modal_user_seq'         : clean_multi_modal_user_seq,
             },
 
             'tag' : {

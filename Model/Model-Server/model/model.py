@@ -12,7 +12,7 @@ MODEL_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Experiment/mode
 
 # item2vec
 with open(os.path.join(MODEL_PATH, 'Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-vs128-vector.pickle'), 'rb') as file: 
-    load_item2vec = pickle.load(file)
+    item2vec = pickle.load(file)
 
 ## Transformer
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
@@ -33,8 +33,6 @@ user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-## User-Seq-Transformer
-## new-User-Seq-Transformer
 user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-User-Seq-Transformer' + '.pt')))
 
 # pretrained_user_seq
@@ -46,8 +44,6 @@ pretrained_user_seq = SASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-## User-Seq-Transformer
-## new-Item2Vec-pretrained-User-Seq-Transformer
 pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'new-Item2Vec-pretrained-User-Seq-Transformer' + '.pt')))
 
 # Mulit-Modal-User-Seq-Transformer
@@ -59,7 +55,6 @@ multi_modal_user_seq = MultiModalSASRec(
         dropout_rate = dropout_rate
         ).to(device)
 
-## multi-modal-User-Seq-Transformer
 multi_modal_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'multi-modal-User-Seq-Transformer' + '.pt')))
 
 # ease
@@ -73,6 +68,52 @@ with open(os.path.join(MODEL_PATH, 'ease.pickle'), 'rb') as file:
     ease = MyCoustomUnpickler(file)
     ease = ease.load()
     ease.device = device
+
+# item2vec
+with open(os.path.join(MODEL_PATH, 'clean-Word2Vec-CBOW-problem_association_seq-problem_level_seq-problem_tag_seq-vs128-vector.pickle'), 'rb') as file: 
+    clean_item2vec = pickle.load(file)
+
+## Transformer
+clean_num_assessmentItemID = 6866
+
+# user_seq
+clean_user_seq = SASRec(
+        num_assessmentItemID = clean_num_assessmentItemID,
+        hidden_units = hidden_units,
+        num_heads = num_heads,
+        num_layers = num_layers,
+        dropout_rate = dropout_rate
+        ).to(device)
+
+clean_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'clean-User-Seq-Transformer' + '.pt')))
+
+# pretrained_user_seq
+clean_pretrained_user_seq = SASRec(
+        num_assessmentItemID = clean_num_assessmentItemID,
+        hidden_units = hidden_units,
+        num_heads = num_heads,
+        num_layers = num_layers,
+        dropout_rate = dropout_rate
+        ).to(device)
+
+clean_pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'clean-Item2Vec-Pretrained-User-Seq-Transformer' + '.pt')))
+
+# Mulit-Modal-User-Seq-Transformer
+clean_multi_modal_user_seq = MultiModalSASRec(
+        num_assessmentItemID = clean_num_assessmentItemID,
+        hidden_units = hidden_units,
+        num_heads = num_heads,
+        num_layers = num_layers,
+        dropout_rate = dropout_rate
+        ).to(device)
+
+clean_multi_modal_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'clean-Multi-Modal' + '.pt')))
+
+# ease
+with open(os.path.join(MODEL_PATH, 'clean-ease.pickle'), 'rb') as file:
+    clean_ease = MyCoustomUnpickler(file)
+    clean_ease = clean_ease.load()
+    clean_ease.device = device
 
 def thompson_sampling(model_type_click_dict):
     '''
@@ -106,7 +147,8 @@ def ease_model(problem_seq):
     return output
 
 def item2vec_model(problem_seq):
-    cos_arr = cosine_similarity(load_item2vec[problem_seq[0]].reshape(1, -1), load_item2vec)[0]
+    print(f'non-clean: {len(problem_seq)}')
+    cos_arr = cosine_similarity(item2vec[problem_seq[0]].reshape(1, -1), item2vec)[0]
     return cos_arr
 
 def user_seq_model(problem_seq):
@@ -128,4 +170,38 @@ def multi_modal_user_seq_model(problem_seq):
     input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
     with torch.no_grad():
         output = multi_modal_user_seq(input)[0].cpu().numpy()
+    return output
+
+# clean
+def clean_ease_model(problem_seq):
+    print(f'clean: {len(problem_seq)}')
+    mat = torch.zeros(size = (1, clean_num_assessmentItemID))
+    mat[0, problem_seq] = 1
+    output = clean_ease.predict(mat)[0].cpu().numpy()
+    clean_ease.clear_memory()
+    return output
+
+def clean_item2vec_model(problem_seq):
+    cos_arr = cosine_similarity(clean_item2vec[problem_seq[0]].reshape(1, -1), clean_item2vec)[0]
+    return cos_arr
+
+def clean_user_seq_model(problem_seq):
+    clean_user_seq.eval()
+    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
+    with torch.no_grad():
+        output = clean_user_seq(input)[0].cpu().numpy()
+    return output
+
+def clean_pretrained_user_seq_model(problem_seq):
+    clean_pretrained_user_seq.eval()
+    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
+    with torch.no_grad():
+        output = clean_pretrained_user_seq(input)[0].cpu().numpy()
+    return output
+
+def clean_multi_modal_user_seq_model(problem_seq):
+    clean_multi_modal_user_seq.eval()
+    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
+    with torch.no_grad():
+        output = clean_multi_modal_user_seq(input)[0].cpu().numpy()
     return output
