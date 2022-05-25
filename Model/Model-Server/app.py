@@ -139,10 +139,13 @@ class SantaBacekJoonApiModelTestServer(Resource):
     def post(self):
         """각 모델에 따른 추천 결과를 반환합니다."""
 
+        # TODO: DB 연동 (백엔드에서 받기)
         model_type_click_dict = {
+
             'item2vec' : {'pos_click' : 2, 'total_view' : 10},
             'ease' : {'pos_click' : 4, 'total_view' : 10},
             'multi_modal_user_seq' : {'pos_click' : 4, 'total_view' : 10},
+        
         }
 
         lately_preference_tags = 'Not-Found-Key'
@@ -178,6 +181,7 @@ class SantaBacekJoonApiModelTestServer(Resource):
 
                         model_type_to_output = {}
 
+                        # TODO: 모델이 버전업이 되어도 model_type에 따라서 output이 생성될 수 있는 code 짜기
                         for model_type in model_type_click_dict.keys():
                             if model_type == 'item2vec':
                                 output = clean_item2vec_model(clean_pre_lately_solved_problem_seq)
