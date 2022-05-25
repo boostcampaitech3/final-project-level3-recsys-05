@@ -76,28 +76,6 @@ with open(os.path.join(MODEL_PATH, 'clean-Word2Vec-CBOW-problem_association_seq-
 ## Transformer
 clean_num_assessmentItemID = 6866
 
-# user_seq
-clean_user_seq = SASRec(
-        num_assessmentItemID = clean_num_assessmentItemID,
-        hidden_units = hidden_units,
-        num_heads = num_heads,
-        num_layers = num_layers,
-        dropout_rate = dropout_rate
-        ).to(device)
-
-clean_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'clean-User-Seq-Transformer' + '.pt')))
-
-# pretrained_user_seq
-clean_pretrained_user_seq = SASRec(
-        num_assessmentItemID = clean_num_assessmentItemID,
-        hidden_units = hidden_units,
-        num_heads = num_heads,
-        num_layers = num_layers,
-        dropout_rate = dropout_rate
-        ).to(device)
-
-clean_pretrained_user_seq.load_state_dict(torch.load(os.path.join(MODEL_PATH, 'clean-Item2Vec-Pretrained-User-Seq-Transformer' + '.pt')))
-
 # Mulit-Modal-User-Seq-Transformer
 clean_multi_modal_user_seq = MultiModalSASRec(
         num_assessmentItemID = clean_num_assessmentItemID,
@@ -147,7 +125,6 @@ def ease_model(problem_seq):
     return output
 
 def item2vec_model(problem_seq):
-    print(f'non-clean: {len(problem_seq)}')
     cos_arr = cosine_similarity(item2vec[problem_seq[0]].reshape(1, -1), item2vec)[0]
     return cos_arr
 
@@ -173,8 +150,25 @@ def multi_modal_user_seq_model(problem_seq):
     return output
 
 # clean
+def clean_thompson_sampling(model_type_click_dict):
+    '''
+    model_type_click_dict = {
+            'model_type' : {'pos_click' : 1, 'total_view' : 1},
+    }
+    '''
+
+    model_type_list = list(model_type_click_dict.keys())
+    sampling_list = []
+
+    for model_type in model_type_list:
+        sampling = beta.rvs(model_type_click_dict[model_type]['pos_click'], model_type_click_dict[model_type]['total_view'])
+        sampling_list.append(sampling)
+
+    idx = np.argmax(sampling_list)
+
+    return model_type_list[idx]
+
 def clean_ease_model(problem_seq):
-    print(f'clean: {len(problem_seq)}')
     mat = torch.zeros(size = (1, clean_num_assessmentItemID))
     mat[0, problem_seq] = 1
     output = clean_ease.predict(mat)[0].cpu().numpy()
@@ -184,20 +178,6 @@ def clean_ease_model(problem_seq):
 def clean_item2vec_model(problem_seq):
     cos_arr = cosine_similarity(clean_item2vec[problem_seq[0]].reshape(1, -1), clean_item2vec)[0]
     return cos_arr
-
-def clean_user_seq_model(problem_seq):
-    clean_user_seq.eval()
-    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
-    with torch.no_grad():
-        output = clean_user_seq(input)[0].cpu().numpy()
-    return output
-
-def clean_pretrained_user_seq_model(problem_seq):
-    clean_pretrained_user_seq.eval()
-    input = {'assessmentItem' : torch.tensor([problem_seq[::-1]]) + 1}
-    with torch.no_grad():
-        output = clean_pretrained_user_seq(input)[0].cpu().numpy()
-    return output
 
 def clean_multi_modal_user_seq_model(problem_seq):
     clean_multi_modal_user_seq.eval()
