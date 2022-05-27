@@ -58,14 +58,8 @@ def index():
 
 @app.route('/result', methods = ["POST"])
 def result():
-    contents = '''
-    <form action="/result" method="post" class="serch-form">
-        <input type="text" name="user_id" placeholder="Please User ID" id="userSearchInput" required="">
-        <button type="submit" class="form-control">Search</button>
-    </form>
-    '''
     if request.method == 'POST':
-        url = 'http://101.101.218.250:30005/test/'
+        url = 'http://101.101.218.250:30005/output/'
 
         data = {
             'key' : 123456,
@@ -75,53 +69,35 @@ def result():
         res = requests.post(url, json = data)
         res = res.json()
 
-        if not os.path.isdir(log_path):
-            os.mkdir(log_path)
-
-        if not os.path.isfile(os.path.join(log_path, log_file_name)):
-            log = {model_type : 0 for model_type in res.keys()}
-            with open(os.path.join(log_path, log_file_name), "w") as json_file:
-                json.dump(log, json_file)
-
-        total_content = f'''
-        <p> {request.form['user_id']} </p>
-        <p> 당신의 수준: {res['rank']} </p>
-        <p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p> 
-        <p> 당신이 지금까지 선호 했던 유형: {'/'.join(res['tag']['total_preference_tags'])} </p>'''
-
-        res = res['model']
-        for model_type in res.keys():
-            item_list = res[model_type]
-            if isinstance(item_list, str):
+        if isinstance(res['ploblems'], str):
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 존재하지 않는 아이디 입니다. </h1>" + '''</div>''')
 
-            item_list_idx = list(map(str, item_list))
-            item_list = ",".join(list(map(str, item_list)))
-            url = f"https://solved.ac/api/v3/problem/lookup?problemIds={item_list}"
+        content = f'''
+        <p> {request.form['user_id']} </p>
+        <p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p>
+        <div class="item-list">
+        '''
+
+        ploblems = res['ploblems']
+        for ploblem in ploblems:
+
+            url = f"https://solved.ac/api/v3/problem/show?problemId={ploblem['output']}"
             headers = {"Content-Type": "application/json"}
             response = requests.request("GET", url, headers=headers)
-            item_list = response.json()
-            
-            item_list = sorted(item_list, key = lambda x: item_list_idx.index(str(x['problemId'])))
-            
-            content = f'''
-            <div class="item-list">
-            <input type="radio" id="{model_type}" name="model_vote" value="{model_type}">
-             <label for="{model_type}"> {model_type} </label><br>
+            item = response.json()
+
+            content += f'''
+            <div class="item">
+                <p id='item-name'><a href={'https://www.acmicpc.net/problem/' + str(item['problemId'])} target="_blank">{str(item['titleKo'])}</a></p>
+                <p id='item-name'>level : {item_level[item['level']]}</p>
+                <p id="item-property">acceptedUserCount : {str(item['acceptedUserCount'])}</p>
+                <p id="item-property">model_type : {str(ploblem['model_type'])}</p>
+            </div>
             '''
-            for item in item_list:
-                content += f'''
-                <div class="item">
-                    <p id='item-name'><a href={'https://www.acmicpc.net/problem/' + str(item['problemId'])} target="_blank">{str(item['titleKo'])}</a></p>
-                    <p id='item-name'>level : {item_level[item['level']]}</p>
-                    <p id="item-property">acceptedUserCount : {str(item['acceptedUserCount'])}</p>
-                </div>
-                '''
-            content += f'''</div>'''
 
-            total_content += content
+        content += f'''</div>'''
 
-        return render_template('base.html', contents = ''' <div class="content"> <form action="/vote" method="post"> ''' + total_content + '''<input type="submit" value="Submit"> </form> </div>''')
+        return render_template('base.html', contents = ''' <div class="content"> ''' + content + ''' </div>''')
 
 @app.route('/vote', methods = ["POST"])
 def vote():
