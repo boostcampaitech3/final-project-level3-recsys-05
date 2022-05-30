@@ -1,25 +1,30 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link th:href="@{/css/main.css}"
-          href="css/main.css" rel="stylesheet">
-    <title>Santa BaekJoon</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <!-- <link th:href="@{/css/main2.css?after}"
+                href="css/main2.css" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css?family=NanumSquare&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link th:href="@{/css/login.css?after}" href="css/main.css" rel="stylesheet">
 </head>
 <body>
 <div class="upper_side_bar">
     <div>
-        <a class="logo" href="/">Home</a>
+        <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
     </div>
-</div>
-<div class='hello'>로그인🎅</div>
-<div class='username_wrapper'>
-    <form action= "login" method='POST'>
-        <input class="username_input_box" type="text" placeholder="username" name="username">
-        <input class="username_input_box" type="password" placeholder="password" name="password">
-        <button class="username_submitbutton" type="submit">로그인</button>
-    </form>
+    <div class="upper_line"></div>
+    <div class="hello">&nbsp;산타백준 로그인</div>
+    <a class="login_is_newbie" href="/signup">산타백준은 처음이에요!</a>
+    <div class='username_wrapper'>
+        <form action= "login" method='POST'>
+            <input class="username_input_box" type="text" placeholder="산타백준 Username" name="username">
+            <input class="username_input_box" type="password" placeholder="산타백준 Password" name="password">
+            <button class="username_submitbutton" type="submit">LOG IN</button>
+        </form>
+    </div>
 </div>
 </body>
 </html>

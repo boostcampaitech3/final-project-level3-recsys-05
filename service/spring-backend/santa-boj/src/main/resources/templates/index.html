@@ -1,43 +1,53 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link th:href="@{/css/main.css?after}"
-        href="css/main.css" rel="stylesheet">
-  <title>Santa BaekJoon</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <!-- <link th:href="@{/css/main.css?after}"
+<!--                href="css/main.css" rel="stylesheet"> &ndash;&gt;-->
+    <link href="https://fonts.googleapis.com/css?family=NanumSquare&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+    <link th:href="@{/css/index.css?after}"
+          href="css/main.css" rel="stylesheet">
+    <title>Santa BaekJoon</title>
 </head>
 <body>
 <div class="upper_side_bar">
-  <div>
-    <a class="logo" href="/">Home</a>
-  </div>
-  <div class="login_button">
-    <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
-      로그인
-    </a>
-    <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
-      로그아웃
-    </a>
-    <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
-      회원가입
-    </a>
-  </div>
-</div>
-<div class='hello'>산타백준에 오신 것을 환영합니다!🎅</div>
-<div th:if="${principal} != 'anonymousUser'" th:text="${principal} + '님 환영합니다'" class="welcome_member">
-  anonymous 님 환영합니다.
-</div>
-<div class='username_wrapper'>
-  <form th:if="${principal} == 'anonymousUser'" action= "nologin" method='GET'>
-    <input class="username_input_box" type="text" placeholder="백준 username" name="bojId">
-    <button class="username_submitbutton" type="submit">submit</button>
-  </form>
-  <a href="/result">
-    <div th:if="${principal} != 'anonymousUser'">
-      맞춤추천 확인
+    <div>
+        <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
     </div>
-  </a>
+    <div class="login_button">
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
+            login
+        </a>
+        <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
+            logout
+        </a>
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
+            signin
+        </a>
+    </div>
 </div>
+
+<div class="backboard">
+    <span class="introduction1">코딩 테스트를 준비하는 당신에게<br>다음에 무슨 문제를 풀지 고민인 당신에게 </span>
+    <span class="introduction2">알아서 잘 딱 깔끔하고 센스있게<br>문제를 추천해주는 서비스</span>
+</div>
+
+<div class="username_wrapper">
+    <form th:if="${principal} == 'anonymousUser'" action= "nologin" method="GET">
+        <input class="username_input_box" type="text" placeholder="백준 username" name="bojId">
+        <button class="username_submitbutton" type="submit">SUBMIT</button>
+    </form>
+    <a href="/result">
+        <div th:if="${principal} != 'anonymousUser'">
+            맞춤추천 확인
+        </div>
+    </a>
+</div>
+<div class="newbie">백준이 처음이라면?</div>
+<div class="newbie_under_line"></div>
+
 </body>
 </html>

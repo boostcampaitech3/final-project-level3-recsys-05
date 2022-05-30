@@ -1,0 +1,150 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-size: 14px;
+}
+
+.upper_side_bar {
+    height: 8%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    color: #fff;
+}
+
+.logo {
+    width: 160px;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    opacity: 1;
+}
+
+.login_button {
+    display: flex;
+    color: rgba(0, 0, 0, 1);
+    position: absolute;
+    width: 10%;
+    height: 30px;
+    top: 50%;
+    right: 10px;
+    margin-right: 30px;
+    font-size: 14px;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.backboard {
+    width: 100%;
+    height: 380px;
+    background: rgba(179,229,252,0.30000001192092896);
+    opacity: 1;
+    position: absolute;
+    top: 80px;
+    left: 0px;
+    overflow: hidden;
+}
+
+.introduction1 {
+    width: 568px;
+    color: rgba(64,64,64,1);
+    position: absolute;
+    top: 25%;
+    left: 5%;
+    font-family: NanumSquare;
+    font-weight: 600;
+    font-size: 1.9em;
+    line-height: 250%;
+    white-space: pre;
+    opacity: 1;
+    text-align: left;
+}
+
+.introduction2 {
+    width: 462px;
+    color: rgb(0, 0, 0);
+    position: absolute;
+    top: 25%;
+    right: 5%;
+    font-family: NanumSquare;
+    font-weight: 700;
+    font-size: 1.9em;
+    line-height: 250%;
+    opacity: 1;
+    text-align: right;
+}
+
+.introduction_location {
+    width: 569px;
+    height: 154px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    opacity: 1;
+    position: absolute;
+    top: 180px;
+    left: 3%;
+    overflow: hidden;
+}
+
+.newbie {
+    width: 227px;
+    color: rgba(64,64,64,1);
+    position: absolute;
+    top: 640px;
+    left: 50%;
+    margin-left: -110px;
+    font-family: NanumSquare;
+    font-weight: 600;
+    font-size: 22px;
+    opacity: 1;
+    text-align: left;
+}
+
+.newbie_under_line {
+    border-style: solid;
+    border-width: thin;
+    color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 1);
+    position: absolute;
+    width: 160px;
+    top: 670px;
+    left: 50%;
+    margin-left: -105px;
+    opacity: 0.8;
+}
+
+.username_wrapper {
+    display: flex;
+    margin: 550px 20% 0 20%;
+    justify-content: center;
+}
+
+.username_input_box {
+    position: absolute;
+    width: 500px;
+    height: 40px;
+    left: 50%;
+    margin-left: -300px;
+    font-size: 1.5em;
+    text-align: center;
+}
+
+.username_submitbutton {
+    background: rgba(64,64,64,1);
+    color: white;
+    position: absolute;
+    width: 90px;
+    height: 40px;
+    margin-left: 300px;
+    font-family: NanumSquare;
+    font-weight: 700;
+    font-size: 1.2rem;
+    text-align: center;
+    border-radius: 8px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
