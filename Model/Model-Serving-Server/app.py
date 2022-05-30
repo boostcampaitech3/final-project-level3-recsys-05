@@ -13,7 +13,6 @@ app = FastAPI(title=title, description=description, docs_url=docs_url, redoc_url
 models = {}
 standard_model_types = []
 
-# TODO: Model Load 구현
 @app.on_event("startup")
 def startup_event():
     models['multi_modal'] = ServingMultiModal('Seq-Item-GNN-Multi-Modal-v1')
@@ -23,6 +22,8 @@ def startup_event():
     standard_model_types.extend(list(models.keys()))
 
 # TODO: 사버 종료시 Logging 기록
+
+# TODO: Model 추기 Load 구현
 
 @app.post('/models', response_model=Output, tags=['models'], description="추천 결과 반환")
 async def main(input: Input) -> Output:
@@ -63,7 +64,6 @@ async def main(input: Input) -> Output:
                     inferences = await asyncio.gather(*inferences)
                     model_type_to_output = {model_type:deque(output) for model_type, output in zip(model_types, inferences)}
 
-                    # TODO: DB 연동 or request 추가 (비로그인시 사용 못함 X)
                     ploblems = []
                     while len(ploblems) < 10:
                         model_type = thompson_sampling(model_types, model_type_click_dict)
