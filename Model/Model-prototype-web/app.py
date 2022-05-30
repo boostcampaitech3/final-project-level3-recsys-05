@@ -59,7 +59,7 @@ def index():
 @app.route('/result', methods = ["POST"])
 def result():
     if request.method == 'POST':
-        url = 'http://101.101.218.250:30005/output/'
+        url = 'http://101.101.218.250:30002/models/'
 
         data = {
             'key' : 123456,
@@ -69,12 +69,21 @@ def result():
         res = requests.post(url, json = data)
         res = res.json()
 
-        if isinstance(res['ploblems'], str):
+        if res['ploblems'][0]['model_type'] == 'Not-Found-Key':
+                return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> 키 값이 들립니다. </h1>" + '''</div>''')
+
+        if res['ploblems'][0]['model_type'] == 'Not-Found-User':
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 존재하지 않는 아이디 입니다. </h1>" + '''</div>''')
+
+        if res['ploblems'][0]['model_type'] == 'Not-Found-User-Solved-Problem':
+                return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 푼 문제가 없습니다. </h1>" + '''</div>''')
+
+        if res['ploblems'][0]['model_type'] == 'Not-Found-User-Lately-Solved-Problem':
+                return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 최근에 푼 문제가 없습니다. </h1>" + '''</div>''')
 
         content = f'''
         <p> {request.form['user_id']} </p>
-        <p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag']['lately_preference_tags'])} </p>
+        <p> 당신이 최근에 선호 하는 유형: {'/'.join(res['tag'])} </p>
         <div class="item-list">
         '''
 
