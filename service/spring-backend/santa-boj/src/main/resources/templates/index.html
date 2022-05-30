@@ -15,17 +15,19 @@
 <body>
 <div class="upper_side_bar">
     <div>
-        <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        <a href="/">
+            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        </a>
     </div>
-    <div class="login_button">
+    <div class="login_wrapper">
         <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
-            login
+            로그인
         </a>
         <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
-            logout
+            로그아웃
         </a>
         <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
-            signin
+            회원가입
         </a>
     </div>
 </div>
@@ -46,8 +48,10 @@
         </div>
     </a>
 </div>
-<div class="newbie">백준이 처음이라면?</div>
-<div class="newbie_under_line"></div>
+<div class="signup_wrapper">
+    <div class="newbie">백준이 처음이라면?</div>
+<!--    <div class="newbie_under_line"></div>-->
+</div>
 
 </body>
 </html>

@@ -89,3 +89,8 @@ a:hover { color: royalblue; text-decoration: underline;}
     justify-content: center;
     /*background-color: aqua;*/
 }
+
+.signup_wrapper {
+    margin-top: 40px;
+    background-color: red;
+}

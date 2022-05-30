@@ -1,3 +1,7 @@
+a:link { text-decoration: none;}
+
+a:visited { text-decoration: none;}
+
 * {
     box-sizing: border-box;
 }
@@ -22,11 +26,11 @@ body {
     opacity: 1;
 }
 
-.login_button {
+.login_wrapper {
     display: flex;
     color: rgba(0, 0, 0, 1);
     position: absolute;
-    width: 10%;
+    width: 200px;
     height: 30px;
     top: 50%;
     right: 10px;
@@ -34,6 +38,21 @@ body {
     font-size: 14px;
     flex-flow: row nowrap;
     justify-content: space-between;
+}
+
+.upper_element {
+    font-size: 25px;
+    font-family: Arial;
+    margin-right: 15px;
+    color: #999999;
+}
+
+.upper_element:visited {
+    color: #999999;
+}
+
+.upper_element:hover {
+    color: #222222;
 }
 
 .backboard {
@@ -89,18 +108,26 @@ body {
     overflow: hidden;
 }
 
+.signup_wrapper {
+    text-align: center;
+    margin-top: 60px;
+}
+
 .newbie {
     width: 227px;
     color: rgba(64,64,64,1);
-    position: absolute;
     top: 640px;
     left: 50%;
-    margin-left: -110px;
     font-family: NanumSquare;
     font-weight: 600;
     font-size: 22px;
     opacity: 1;
     text-align: left;
+    margin:auto;
+}
+
+.newbie:hover {
+    text-decoration: underline;
 }
 
 .newbie_under_line {
@@ -108,12 +135,11 @@ body {
     border-width: thin;
     color: rgba(0, 0, 0, 1);
     background-color: rgba(0, 0, 0, 1);
-    position: absolute;
     width: 160px;
     top: 670px;
     left: 50%;
-    margin-left: -105px;
     opacity: 0.8;
+    margin: auto;
 }
 
 .username_wrapper {
@@ -138,7 +164,7 @@ body {
     position: absolute;
     width: 90px;
     height: 40px;
-    margin-left: 300px;
+    margin-left: 220px;
     font-family: NanumSquare;
     font-weight: 700;
     font-size: 1.2rem;
