@@ -109,20 +109,22 @@ body {
 }
 
 .signup_wrapper {
+    position: relative;
+    margin: 0 auto;
     text-align: center;
     margin-top: 60px;
+    width: 700px;
 }
 
 .newbie {
+    text-align: center;
     width: 227px;
     color: rgba(64,64,64,1);
     top: 640px;
-    left: 50%;
     font-family: NanumSquare;
     font-weight: 600;
-    font-size: 22px;
+    font-size: 14px;
     opacity: 1;
-    text-align: left;
     margin:auto;
 }
 
@@ -144,16 +146,34 @@ body {
 
 .username_wrapper {
     display: flex;
-    margin: 550px 20% 0 20%;
+    flex-direction: column;
+    /*margin: 550px 20% 0 20%;*/
+    align-content: center;
     justify-content: center;
+    position: absolute;
+    top: 550px;
+    width: 100%;
+}
+
+.inner_username_wrapper {
+    position: relative;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 80%;
+}
+
+.user_name_form {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
 }
 
 .username_input_box {
-    position: absolute;
+    position: relative;
     width: 500px;
     height: 40px;
-    left: 50%;
-    margin-left: -300px;
     font-size: 1.5em;
     text-align: center;
 }
@@ -161,10 +181,10 @@ body {
 .username_submitbutton {
     background: rgba(64,64,64,1);
     color: white;
-    position: absolute;
+    position: relative;
     width: 90px;
     height: 40px;
-    margin-left: 220px;
+    margin-left: 10px;
     font-family: NanumSquare;
     font-weight: 700;
     font-size: 1.2rem;
@@ -173,4 +193,24 @@ body {
     border: 0;
     outline: 0;
     cursor: pointer;
+}
+
+.member_result {
+    font-size: 40px;
+    width: 250px;
+    height: 50px;
+    color: #222222;
+    background-color: #ffffff;
+    border-radius: 5px;
+    text-align: center;
+    transition-duration: 0.3s;
+    padding: 8px 0;
+}
+
+.member_result:hover {
+    background-color: #dadfe3;
+}
+
+#member_result_text {
+    vertical-align: middle;
 }
