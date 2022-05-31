@@ -82,6 +82,7 @@ body {
 
 .hello_message2 {
     font-size: 20px;
+    color: royalblue;
 }
 
 .result_wrapper {
@@ -99,20 +100,27 @@ body {
 }
 
 .explain {
-    text-align: center;
-    font-size: 40px;
-    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    border-bottom: 1px solid #222222;
 }
 
-.explain:after {
-    position: absolute;
-    top: 40px;
-    right: 0;
-    content: "";
-    width: 100%;
-    height: 1px;
-    background: #222222;
+#head_title {
+    margin-left: 450px;
 }
+#head_probId {
+    margin-left: 30px;
+}
+
+/*.explain:after {*/
+/*    position: absolute;*/
+/*    top: 40px;*/
+/*    right: 0;*/
+/*    content: "";*/
+/*    width: 100%;*/
+/*    height: 1px;*/
+/*    background: #222222;*/
+/*}*/
 
 .result_element {
     font-size: 20px;
