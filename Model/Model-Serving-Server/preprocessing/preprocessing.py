@@ -2,42 +2,6 @@ import os
 import json
 import numpy as np
 
-item_level = {
-
-    0	:"Unrated",
-    1	:"Bronze V",
-    2	:"Bronze IV",
-    3	:"Bronze III",
-    4	:"Bronze II",
-    5	:"Bronze I",
-    6	:"Silver V",
-    7	:"Silver IV",
-    8	:"Silver III",
-    9	:"Silver II",
-    10	:"Silver I",
-    11	:"Gold V",
-    12	:"Gold IV",
-    13	:"Gold III",
-    14	:"Gold II",
-    15	:"Gold I",
-    16	:"Platinum V",
-    17	:"Platinum IV",
-    18	:"Platinum III",
-    19	:"Platinum II",
-    20	:"Platinum I",
-    21	:"Diamond V",
-    22	:"Diamond IV",
-    23	:"Diamond III",
-    24	:"Diamond II",
-    25	:"Diamond I",
-    26	:"Ruby V",
-    27	:"Ruby IV",
-    28	:"Ruby III",
-    29	:"Ruby II",
-    30	:"Ruby I",
-
-    }
-
 VAL_TO_IDX_DATA_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Serving-Server/db'
 
 with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'problem_id_to_idx.json'), 'r', encoding = 'utf-8') as f:
@@ -54,10 +18,6 @@ with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'tag_to_idx.json'), 'r', encoding =
 
 with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'idx_to_tag.json'), 'r', encoding = 'utf-8') as f:
     idx_to_tag = json.load(f)
-
-with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'problem_id_to_level.json'), 'r', encoding = 'utf-8') as f:
-    problem_id_to_level = json.load(f)
-
 
 async def problem_seq2idx(problem_seq:list) -> list:
     return_problem_seq = []

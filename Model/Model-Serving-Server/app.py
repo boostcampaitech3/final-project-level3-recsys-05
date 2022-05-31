@@ -23,26 +23,26 @@ def startup_event():
 
 # TODO: 사버 종료시 Logging 기록
 
-# TODO: Model 추기 Load 구현
+# TODO: Model 추가 Load 구현
 
 @app.post('/models', response_model=Output, tags=['models'], description="추천 결과 반환")
 async def main(input: Input) -> Output:
-    ploblems = 'Not-Found-Key'
+    problems = 'Not-Found-Key'
     tag = 'Not-Found-Key'
 
     if input.key == 123456:
-        ploblems = 'Not-Found-User'
+        problems = 'Not-Found-User'
         tag = 'Not-Found-User'
 
         crawlings = [total_solved_problem_seq_crawling(input.username), lately_solved_problem_seq_crawling(input.username)]
         total_solved_problem_seq, lately_solved_problem_seq = await asyncio.gather(*crawlings)
 
         if not isinstance(total_solved_problem_seq, str):
-            ploblems = 'Not-Found-User-Solved-Problem'
+            problems = 'Not-Found-User-Solved-Problem'
             tag = 'Not-Found-User-Solved-Problem'
 
             if total_solved_problem_seq:
-                ploblems = 'Not-Found-User-Lately-Solved-Problem'
+                problems = 'Not-Found-User-Lately-Solved-Problem'
                 tag = 'Not-Found-User-Lately-Solved-Problem'
 
                 preprocessings = [problem_seq2idx(total_solved_problem_seq), problem_seq2idx(lately_solved_problem_seq)]
@@ -64,14 +64,14 @@ async def main(input: Input) -> Output:
                     inferences = await asyncio.gather(*inferences)
                     model_type_to_output = {model_type:deque(output) for model_type, output in zip(model_types, inferences)}
 
-                    ploblems = []
-                    while len(ploblems) < 10:
+                    problems = []
+                    while len(problems) < 10:
                         model_type = thompson_sampling(model_types, model_type_click_dict)
                         
                         output = model_type_to_output[model_type]
                         output = output.popleft()
 
-                        ploblems.append(
+                        problems.append(
                                 {
                                     'model_type' : model_type,
                                     'output' : output
@@ -84,17 +84,19 @@ async def main(input: Input) -> Output:
                             else:
                                 if output in model_type_to_output[model_type]:
                                     model_type_to_output[model_type].remove(output)
-
-    if isinstance(ploblems, str):
-        datas = {    
-            'ploblems' : [{'model_type': ploblems, 'output': ploblems}],
-            'tag' : [tag],
+    
+    datas = {    
+            'problems' : problems,
+            'tag' : tag,
         }
 
-    else:
+    try:
+        Output(**datas)
+    
+    except:
         datas = {    
-            'ploblems' : ploblems,
-            'tag' : tag,
+            'problems' : [{'model_type': problems, 'output': problems}],
+            'tag' : [tag],
         }
     
     return datas

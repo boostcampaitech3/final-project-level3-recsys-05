@@ -1,5 +1,5 @@
 from typing import List
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 
 title="SantaBOJ"
 
@@ -25,20 +25,11 @@ class Input(BaseModel):
     username: str= Field(description='추천을 위한 유저아이디')
 
 class Output(BaseModel):
-    ploblems: List[ModelOutput] = Field(description='추천 결과(종합)')
+    problems: List[ModelOutput] = Field(description='''
+    추천 결과(종합) / 
+    Not-Found-Key : key 값 오류 / 
+    Not-Found-User : 맞지 않는 유저 / 
+    Not-Found-User-Solved-Problem : 맞은 문제가 없는 유저 / 
+    Not-Found-User-Lately-Solved-Problem : 최근에 푼 문제에 우리 문제 리스트에 속한 문제가 없는 유저
+    ''')
     tag: List[str] = Field(description='추천 태그')
-
-    @validator("ploblems")
-    def ploblems_is_str(cls, v):
-        print(v)
-        if isinstance(v, str):
-            v = [ModelOutput(model_type = v, output = v)]
-        return v
-    
-    @validator("tag")
-    def tag_is_str(cls, v):
-        if isinstance(v, str):
-            v = [v]
-        return v
-
-
