@@ -5,16 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 public class PredictResultDTO {
-    @JsonProperty("non_filtering_output")
-    private List<String> nonFilteringOutput;
-    @JsonProperty("lately_filtering_output")
-    private List<String> latelyFilteringOutput;
-    @JsonProperty("total_filtering_output")
-    private List<String> totalFilteringOutput;
-    @JsonProperty("model_type")
-    private String modelType;
+    @JsonProperty("problems")
+    private List<Map<String, String>> problems;
+    @JsonProperty("tag")
+    private List<String> tag;
 }

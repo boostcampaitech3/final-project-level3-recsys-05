@@ -12,15 +12,13 @@ import java.net.MalformedURLException;
 
 
 class PredictResultServiceImplTest {
-    PredictResultService predictResultService = new PredictResultServiceImpl("http://101.101.218.250:30005", new ObjectMapper());
+    PredictResultService predictResultService = new PredictResultServiceImpl("http://101.101.218.250:30002/models", new ObjectMapper());
 
     @Test
     public void test1() throws MalformedURLException, JsonProcessingException {
         PredictResultDTO predictResultDTO = predictResultService.getPredictResult("kjpark4321");
 
-        Assertions.assertThat(predictResultDTO.getNonFilteringOutput()).isNotNull();
-        Assertions.assertThat(predictResultDTO.getLatelyFilteringOutput()).isNotNull();
-        Assertions.assertThat(predictResultDTO.getTotalFilteringOutput()).isNotNull();
+        Assertions.assertThat(predictResultDTO).isNotNull();
 
     }
 }

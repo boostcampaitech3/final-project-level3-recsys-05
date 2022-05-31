@@ -41,14 +41,15 @@ public class PredictResultServiceImpl implements PredictResultService{
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> responseEntity = restTemplate.exchange(this.url, HttpMethod.POST, entity, String.class);
-
+        PredictResultDTO resultDTO;
         try {
-            PredictResultDTO resultDTO = objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
+            resultDTO = objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
         } catch (MismatchedInputException e){
             log.error("not found user in boj [{}]", username);
             return null;
         }
 
-        return objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
+
+        return resultDTO;
     }
 }

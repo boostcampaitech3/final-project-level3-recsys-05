@@ -26,7 +26,7 @@ public class RecommendController {
     public String nologinResult(@RequestParam String bojId, Model model) throws JsonProcessingException, MalformedURLException {
 
         PredictResultDTO predictResult = predictResultService.getPredictResult(bojId);
-        log.info("predict result by model [{}]", predictResult.getModelType());
+//        log.info("predict result by model [{}]", predictResult.getModelType());
 
         model.addAttribute("bojId", bojId);
         model.addAttribute("predictResult", predictResult);
@@ -40,7 +40,7 @@ public class RecommendController {
         String username = member.getUsername();
 
         PredictResultDTO predictResult = predictResultService.getPredictResult(username);
-        log.info("predict result by model [{}]", predictResult.getModelType());
+//        log.info("predict result by model [{}]", predictResult.getModelType());
 
         model.addAttribute("username", username);
         model.addAttribute("predictResult", predictResult);
