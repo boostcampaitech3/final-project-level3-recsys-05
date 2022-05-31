@@ -23,7 +23,7 @@ def startup_event():
 
 # TODO: 사버 종료시 Logging 기록
 
-# TODO: Model 추기 Load 구현
+# TODO: Model 추가 Load 구현
 
 @app.post('/models', response_model=Output, tags=['models'], description="추천 결과 반환")
 async def main(input: Input) -> Output:
