@@ -85,15 +85,19 @@ body {
     background: rgba(64,64,64,1);
     align-items: center;
     color: white;
-    width: 90px;
+    width: 60%;
     height: 45px;
     margin: 5% auto 3% auto;
     font-family: NanumSquare;
     font-size: 1.2rem;
     font-weight: 700;
     justify-content : center;
-    border-radius: 8px;
+    border-radius: 3px;
     border: 0;
     outline: 0;
     cursor: pointer;
+}
+
+.login_is_newbie:hover {
+    text-decoration: underline;
 }
