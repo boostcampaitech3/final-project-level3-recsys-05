@@ -8,11 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -55,8 +54,39 @@ public class PredictResultServiceImpl implements PredictResultService{
     }
 
     @Override
-    public List<String> problemsTitles(List<String> problems) {
-        return null;
+    public Map<String, String> problemsTitles(List<String> problems) throws JsonProcessingException {
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
+
+        StringBuffer problemIds = new StringBuffer("");
+
+        for (String problemId : problems){
+            problemIds.append(problemId);
+            problemIds.append(',');
+        }
+        problemIds.deleteCharAt(problemIds.length()-1);
+
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://solved.ac/api/v3/problem/lookup")
+                .queryParam("problemIds", problemIds.toString());
+
+
+        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> responseEntity = restTemplate.exchange(
+                builder.toUriString(), HttpMethod.GET, entity, String.class);
+
+        Map[] ProblemInfoDTO = objectMapper.readValue(responseEntity.getBody(), Map[].class);
+        HashMap<String, String> problemInfoMap = new HashMap<>();
+
+        for(Map result : ProblemInfoDTO){
+            Map<String, Object> real_object = (Map<String, Object>) result;
+            Map<String, String> probInfo = new HashMap<>();
+            problemInfoMap.put(Integer.toString((Integer)real_object.get("problemId")), (String) real_object.get("titleKo"));
+        }
+        
+        return problemInfoMap;
     }
 
 
