@@ -165,6 +165,8 @@ body {
 
 .user_name_form {
     display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
     align-content: center;
     justify-content: center;
     width: 100%;
@@ -180,16 +182,16 @@ body {
 
 .username_submitbutton {
     background: rgba(64,64,64,1);
+    width: 500px;
+    margin-top: 10px;
     color: white;
     position: relative;
-    width: 90px;
     height: 40px;
-    margin-left: 10px;
     font-family: NanumSquare;
     font-weight: 700;
     font-size: 1.2rem;
     text-align: center;
-    border-radius: 8px;
+    border-radius: 3px;
     border: 0;
     outline: 0;
     cursor: pointer;
