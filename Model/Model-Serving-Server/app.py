@@ -1,7 +1,7 @@
 import asyncio
 import uvicorn
 from fastapi import FastAPI
-from utlis.utils import Input, Output, title, description, docs_url, redoc_url
+from utlis.utils import Input, Output, ModelOutput, title, description, docs_url, redoc_url
 from crawling.crawling import total_solved_problem_seq_crawling, lately_solved_problem_seq_crawling
 from preprocessing.preprocessing import problem_seq2idx, serch_best_tag
 from inference.inference import inference, thompson_sampling
@@ -84,17 +84,19 @@ async def main(input: Input) -> Output:
                             else:
                                 if output in model_type_to_output[model_type]:
                                     model_type_to_output[model_type].remove(output)
+    
+    datas = {    
+            'ploblems' : ploblems,
+            'tag' : tag,
+        }
 
-    if isinstance(ploblems, str):
+    try:
+        Output(**datas)
+    
+    except:
         datas = {    
             'ploblems' : [{'model_type': ploblems, 'output': ploblems}],
             'tag' : [tag],
-        }
-
-    else:
-        datas = {    
-            'ploblems' : ploblems,
-            'tag' : tag,
         }
     
     return datas

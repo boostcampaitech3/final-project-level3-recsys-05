@@ -27,18 +27,3 @@ class Input(BaseModel):
 class Output(BaseModel):
     ploblems: List[ModelOutput] = Field(description='추천 결과(종합)')
     tag: List[str] = Field(description='추천 태그')
-
-    @validator("ploblems")
-    def ploblems_is_str(cls, v):
-        print(v)
-        if isinstance(v, str):
-            v = [ModelOutput(model_type = v, output = v)]
-        return v
-    
-    @validator("tag")
-    def tag_is_str(cls, v):
-        if isinstance(v, str):
-            v = [v]
-        return v
-
-
