@@ -2,7 +2,7 @@
     "model_name": "Mutl-Modal",
     "save_dir" : "./save",
     "remote_server_uri" : "http://34.64.110.227:5000",
-    "experiment_name" : "/my-experiment6",
+    "experiment_name" : "/Mutl-Modal",
     "user" : "SeongBeom",
 
     "data_dir" : "./data",

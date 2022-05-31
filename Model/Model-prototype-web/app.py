@@ -69,16 +69,16 @@ def result():
         res = requests.post(url, json = data)
         res = res.json()
 
-        if res['ploblems'][0]['model_type'] == 'Not-Found-Key':
+        if res['problems'][0]['model_type'] == 'Not-Found-Key':
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> 키 값이 들립니다. </h1>" + '''</div>''')
 
-        if res['ploblems'][0]['model_type'] == 'Not-Found-User':
+        if res['problems'][0]['model_type'] == 'Not-Found-User':
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 존재하지 않는 아이디 입니다. </h1>" + '''</div>''')
 
-        if res['ploblems'][0]['model_type'] == 'Not-Found-User-Solved-Problem':
+        if res['problems'][0]['model_type'] == 'Not-Found-User-Solved-Problem':
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 푼 문제가 없습니다. </h1>" + '''</div>''')
 
-        if res['ploblems'][0]['model_type'] == 'Not-Found-User-Lately-Solved-Problem':
+        if res['problems'][0]['model_type'] == 'Not-Found-User-Lately-Solved-Problem':
                 return render_template('base.html', contents = ''' <div class="content"> ''' + f"<h1> {request.form['user_id']} 최근에 푼 문제가 없습니다. </h1>" + '''</div>''')
 
         content = f'''
@@ -87,10 +87,10 @@ def result():
         <div class="item-list">
         '''
 
-        ploblems = res['ploblems']
-        for ploblem in ploblems:
+        problems = res['problems']
+        for problem in problems:
 
-            url = f"https://solved.ac/api/v3/problem/show?problemId={ploblem['output']}"
+            url = f"https://solved.ac/api/v3/problem/show?problemId={problem['output']}"
             headers = {"Content-Type": "application/json"}
             response = requests.request("GET", url, headers=headers)
             item = response.json()
@@ -100,7 +100,7 @@ def result():
                 <p id='item-name'><a href={'https://www.acmicpc.net/problem/' + str(item['problemId'])} target="_blank">{str(item['titleKo'])}</a></p>
                 <p id='item-name'>level : {item_level[item['level']]}</p>
                 <p id="item-property">acceptedUserCount : {str(item['acceptedUserCount'])}</p>
-                <p id="item-property">model_type : {str(ploblem['model_type'])}</p>
+                <p id="item-property">model_type : {str(problem['model_type'])}</p>
             </div>
             '''
 
@@ -124,5 +124,5 @@ def vote():
 
 if __name__ == '__main__':
     # app.run(debug = True)
-    app.run(host='0.0.0.0', debug = False, port = 30001)
+    app.run(host='0.0.0.0', debug = False, port = 30001, use_reloader=True)
 

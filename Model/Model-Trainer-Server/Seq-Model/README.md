@@ -8,10 +8,10 @@ train
 Config files are in `.json` format:
 ```javascript
 {
-    "model_name": "Mutl-Modal",
+    "model_name": "Seq-Model",
     "save_dir" : "./save",
     "remote_server_uri" : "http://34.64.110.227:5000",
-    "experiment_name" : "/Mutl-Modal",
+    "experiment_name" : "/Seq-Model",
     "user" : "SeongBeom",
 
     "data_dir" : "./data",
@@ -26,6 +26,7 @@ Config files are in `.json` format:
     "num_layers" : 1,
     "dropout_rate" : 0.5,
     "lr" : 0.001,
-    "emb_cols" : ["Item2Vec-Embedding", "LightGCN-Embedding", "Seq-Embedding"]
+    "emb_cols" : ["Seq-Embedding"]
 }
+
 ```
