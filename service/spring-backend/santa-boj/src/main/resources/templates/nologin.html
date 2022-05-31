@@ -8,35 +8,48 @@
           href="css/main.css" rel="stylesheet">
     <title>Santa BaekJoon</title>
 </head>
-<body>
-<div class="upper_side_bar">
-    <div>
-        <a href="/">
-            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
-        </a>
-    </div>
-    <div class="login_wrapper">
-        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
-            로그인
-        </a>
-        <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
-            로그아웃
-        </a>
-        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
-            회원가입
-        </a>
-    </div>
-</div>
-<div class='hello'><span>당신의</span>님의 문제 추천 결과!🎅</div>
-<div class='result_wrapper'>
-    <div class="element_wrapper">
-        <div class="explain">추천 List</div>
-        <ul th:each="item: ${predictResult.getProblems}">
-            <a th:href="@{|https://www.acmicpc.net/problem/${item['output']}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
-                <li class="result_element" th:text="${item['output']}">item</li>
-            </a>
-        </ul>
-    </div>
-</div>
-</body>
+    <body>
+        <div class="upper_side_bar">
+            <div>
+                <a href="/">
+                    <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+                </a>
+            </div>
+            <div class="login_wrapper">
+                <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
+                    로그인
+                </a>
+                <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
+                    로그아웃
+                </a>
+                <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
+                    회원가입
+                </a>
+            </div>
+        </div>
+        <div class="content_wrapper">
+            <div class="content">
+<!--                <div class='hello'><span>당신의</span> 문제 추천 결과!🎅</div>-->
+                <div class="hello_message_wrapper">
+                    <span class="hello_message">산타백준에 오신 것을 환영합니다.<br></span>
+                    <span class="hello_message2" th:text="${predictResult.tag} + ' 에 관심이 있으시군요'">산타백준에 오신 것을 환영합니다.</span>
+                    <span th:if="${principal} != 'anonymousUser'" th:text=" ${principal} + '님! 이 페이지는 비로그인 추천 페이지입니다. 홈에서 회원 전용 결과를 확인하는 페이지로 이동하세요!'">로그인 경고</span>
+                </div>
+                <div class='result_wrapper'>
+                    <div class="element_wrapper">
+                        <div class="explain">추천 List</div>
+                        <ul class="result_ul" th:each="item: ${predictResult.getProblems}">
+                            <li class="result_element">
+                                <a th:href="@{|https://www.acmicpc.net/problem/${item['output']}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
+                                    <span class="problem_number" th:text="${item['output']}">문제번호</span>
+                                    <span class="problem_name">문제이름</span>
+                                </a>
+                                <span class="li_deco"><br></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>

@@ -7,6 +7,7 @@ import com.boj.santa.santaboj.domain.service.PredictResultService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +31,9 @@ public class RecommendController {
 
         model.addAttribute("bojId", bojId);
         model.addAttribute("predictResult", predictResult);
+        String principal = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        model.addAttribute("principal", principal);
 
         return "nologin";
     }

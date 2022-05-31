@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -52,4 +53,11 @@ public class PredictResultServiceImpl implements PredictResultService{
 
         return resultDTO;
     }
+
+    @Override
+    public List<String> problemsTitles(List<String> problems) {
+        return null;
+    }
+
+
 }
