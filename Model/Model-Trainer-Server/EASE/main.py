@@ -64,3 +64,5 @@ if __name__ == '__main__':
         mlflow.set_tag('mlflow.user', config.user)
         mlflow.log_param("reg", config.reg)
         main(config)
+    
+    # TODO: 모델 학습 완료 후 모델 서빙 서버에 모델 업데이트 requests 보내기 (model_type, run_id, model_name)
