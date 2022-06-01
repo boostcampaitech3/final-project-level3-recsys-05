@@ -118,14 +118,13 @@ body {
 
 .newbie {
     text-align: center;
-    width: 227px;
+    width: 100%;
     color: rgba(64,64,64,1);
     top: 640px;
     font-family: NanumSquare;
     font-weight: 600;
     font-size: 14px;
     opacity: 1;
-    margin:auto;
 }
 
 .newbie:hover {

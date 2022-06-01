@@ -32,8 +32,10 @@
                 <div class="hello_message_wrapper">
                     <span class="hello_message">산타백준에 오신 것을 환영합니다.<br></span>
                     <span class="hello_message2" th:text="${mostCategory}">카테고리</span>
-                    <span class="hello_message2" style="color: #222222">에 관심있으시군요.<br>추천 목록은 다음과 같습니다.</span>
-                    <span th:if="${principal} != 'anonymousUser'" th:text=" ${principal} + '님! 이 페이지는 비로그인 추천 페이지입니다. 홈에서 회원 전용 결과를 확인하는 페이지로 이동하세요!'">로그인 경고</span>
+                    <span class="hello_message2" style="color: #222222">에 관심있으시군요.<br>추천 목록은 다음과 같습니다.<br></span>
+                    <span th:if="${principal} != 'anonymousUser'"
+                          th:text=" ${principal} + '님! 이 페이지는 비로그인 추천 페이지입니다. 홈에서 회원 전용 결과를 확인하는 페이지로 이동하세요!'"
+                    style="color: royalblue; font-size: 15px;">로그인 경고</span>
                 </div>
                 <div class='result_wrapper'>
                     <div class="element_wrapper">

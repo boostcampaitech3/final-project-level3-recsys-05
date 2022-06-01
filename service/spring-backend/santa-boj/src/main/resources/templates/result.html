@@ -4,41 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css">
-    <link th:href="@{/css/main.css}"
+    <link th:href="@{/css/result.css}"
           href="css/main.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js" defer></script>
+    <script th:src="@{/js/result.js}" src="js/result.js" defer></script>
     <title>Santa BaekJoon</title>
 </head>
 <body>
 <div class="upper_side_bar">
     <div>
-        <a class="logo" href="/">Home</a>
+        <a href="/">
+            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        </a>
+    </div>
+    <div class="login_wrapper">
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
+            로그인
+        </a>
+        <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
+            로그아웃
+        </a>
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
+            회원가입
+        </a>
     </div>
 </div>
-<div class='hello'><span style="color: royalblue" th:text="${username}">username</span>님의 문제 추천 결과!🎅</div>
-<div class='result_wrapper'>
-    <div class="element_wrapper">
-        <div class="explain">필터링 되지 않은 추천 List</div>
-        <ul th:each="item: ${predictResult.nonFilteringOutput}">
-            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
-                <li class="result_element" th:text="${item}">item</li>
-            </a>
-        </ul>
-    </div>
-    <div class="element_wrapper">
-        <div class="explain">최근 풀이에 속하는 문제가 필터링된 추천 List</div>
-        <ul th:each="item: ${predictResult.latelyFilteringOutput}">
-            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/{{ item }}">
-                <li class="result_element" th:text="${item}">item</li>
-            </a>
-        </ul>
-    </div>
-    <div class="element_wrapper">
-        <div class="explain">지금 까지 푼 모든 문제가 필터링된 추천 List</div>
-        <ul th:each="item: ${predictResult.totalFilteringOutput}">
-            <a th:href="@{|https://www.acmicpc.net/problem/${item}|}" target="_blank" href="https://www.acmicpc.net/problem/{{ item }}">
-                <li class="result_element" th:text="${item}">item</li>
-            </a>
-        </ul>
+<div class="content_wrapper">
+    <div class="content">
+        <div class="hello_message_wrapper">
+            <span class="hello_message" th:text="${username} + ' 님의 추천결과는 다음과 같습니다.'">산타백준에 오신 것을 환영합니다.<br></span>
+            <span class="hello_message2" th:text="${mostCategory}">카테고리</span>
+            <span class="hello_message2" style="color: #222222">에 관심있으시군요.<br>추천 목록은 다음과 같습니다.<br></span>
+        </div>
+        <div class='result_wrapper'>
+            <div class="element_wrapper">
+                <div class="explain">
+                    <span id="head_probId">#</span>
+                    <span id="head_title">제목</span>
+                </div>
+                <ul class="result_ul" th:each="item: ${predictResult}">
+                    <li class="result_element">
+                        <a th:href="@{|https://www.acmicpc.net/problem/${item.problemId}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
+                            <span class="problem_number" th:text="${item.problemId}">문제번호</span>
+                            <span class="problem_name" th:text="${item.problemName}">문제이름</span>
+                        </a>
+                        <div class="like_button" th:value="${item.usedModelName}">❤️</div>
+                        <span class="li_deco"><br></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 </body>
