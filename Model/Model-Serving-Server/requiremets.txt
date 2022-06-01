@@ -4,6 +4,7 @@ httpx==0.23.0
 mlflow==1.26.0
 nest-asyncio==1.5.5
 numpy @ file:///tmp/build/80754af9/numpy_and_numpy_base_1603570489231/work
+pydantic==1.9.1
 pandas==1.4.2
 scikit-learn==1.0.2
 scipy==1.8.0
