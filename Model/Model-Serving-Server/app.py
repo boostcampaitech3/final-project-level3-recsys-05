@@ -15,10 +15,10 @@ standard_model_types = []
 
 @app.on_event("startup")
 def startup_event():
-    models['multi_modal'] = ServingMultiModal('Seq-Item-GNN-Multi-Modal-v1')
-    models['lightGCN'] = ServingLightGCN('LightGCN-Embedding')
-    models['item2vec'] = ServingItem2Vec('Item2Vec-Embedding')
-    models['ease'] = ServingEASE('ease-item-similarity-matrix')
+    models['multi_modal'] = ServingMultiModal(run_id='5b491351e5444463bfc4e968e85504a4' ,model_name='Seq-Item-GNN-Multi-Modal-v1')
+    models['lightGCN'] = ServingLightGCN(run_id='485f88f10c024cb88e4e12fbbb8a55b3',model_name='LightGCN-Embedding')
+    models['item2vec'] = ServingItem2Vec(run_id='ac8bf76b2e8c4e0d97a25f332a8781bf',model_name='Item2Vec-Embedding')
+    models['ease'] = ServingEASE(run_id='5298f9414e4b40febd1d56d9e4feb7b3',model_name='ease-item-similarity-matrix')
     standard_model_types.extend(list(models.keys()))
 
 # TODO: 사버 종료시 Logging 기록
