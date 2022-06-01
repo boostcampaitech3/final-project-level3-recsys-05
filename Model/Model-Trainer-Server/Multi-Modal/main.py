@@ -65,10 +65,9 @@ def main(config):
         emb_cols=config.emb_cols,
         ).to(device)
 
-    # TODO: MLflow에서 Embedding load 해서 pre-trained
     with torch.no_grad():
         for emb_col in config.emb_cols:
-            with open(os.path.join(config.data_dir, f'{emb_col}.pickle'), 'rb') as file:
+            with open(os.path.join(config.embedding_path, f'{emb_col}.pickle'), 'rb') as file:
                 pre_emb = pickle.load(file)
             for idx in range(config.num_problem_id):
                 model.emb_dict[emb_col].weight[idx + 1] = torch.tensor(pre_emb[idx]).to(device)
@@ -105,6 +104,13 @@ if __name__ == '__main__':
         os.mkdir(config.save_dir)
 
     mlflow.set_tracking_uri(config.remote_server_uri)
+
+    # Embedding load
+    for emb_col in config.emb_cols:
+        client = mlflow.tracking.MlflowClient()
+        embedding_path = client.download_artifacts(config.embedding_run_ids[emb_col], "Embedding", "./")
+    config.embedding_path = embedding_path
+
     experiment = mlflow.get_experiment_by_name(config.experiment_name)
     if experiment == None: experiment = mlflow.set_experiment(config.experiment_name)
     
@@ -113,4 +119,15 @@ if __name__ == '__main__':
 
     with mlflow.start_run(run_id=run.info.run_id):
         mlflow.set_tag('mlflow.user', config.user)
+
+        mlflow.log_param("epochs", config.epochs)
+        mlflow.log_param("batch_size", config.batch_size)
+        mlflow.log_param("num_workers", config.num_workers)
+        mlflow.log_param("hidden_units", config.hidden_units)
+        mlflow.log_param("num_heads", config.num_heads)
+        mlflow.log_param("num_layers", config.num_layers)
+        mlflow.log_param("dropout_rate", config.dropout_rate)
+        mlflow.log_param("lr", config.lr)
+        mlflow.log_param("emb_cols", config.emb_cols)
+        
         main(config)
