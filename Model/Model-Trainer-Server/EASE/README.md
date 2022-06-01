@@ -17,7 +17,8 @@ Config files are in `.json` format:
     "data_dir" : "./data",
     "data_name" : "user",
 
-    "reg" : 1000
+    "reg" : 1000,
+    "seed" : 22
 }
 
 ```

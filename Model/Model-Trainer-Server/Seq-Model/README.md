@@ -9,6 +9,7 @@ Config files are in `.json` format:
 ```javascript
 {
     "model_name": "Seq-Model",
+    "embedding_name": "Seq-Embedding",
     "save_dir" : "./save",
     "remote_server_uri" : "http://34.64.110.227:5000",
     "experiment_name" : "/Seq-Model",
