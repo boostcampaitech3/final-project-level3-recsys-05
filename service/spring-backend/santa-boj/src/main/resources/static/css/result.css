@@ -166,7 +166,7 @@ html, body {
 
 #wrap {
     z-index: -1;
-    min-height: 100vh;
+    min-height: 130vh;
     position: relative;
     width: 100%;
     background-color: #ffffff;

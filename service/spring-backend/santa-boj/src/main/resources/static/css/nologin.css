@@ -64,6 +64,7 @@ body {
 }
 
 .content {
+    height: 1300px;
     margin: auto;
     height: auto;
 }
@@ -150,8 +151,8 @@ html, body {
 
 #wrap {
     z-index: -1;
-    min-height: 100vh;
-    /*position: relative;*/
+    min-height: 130vh;
+    position: relative;
     width: 100%;
     background-color: #ffffff;
 }
