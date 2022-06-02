@@ -13,6 +13,8 @@ mlflow.set_tracking_uri(remote_server_uri)
 
 class ServingBase:
     def __init__(self, run_id:str, model_name:str):
+        self.run_id = run_id
+        self.model_name = model_name
         self.model = self.init_model(run_id, model_name)
 
     def init_model(self, run_id:str, model_name:str):

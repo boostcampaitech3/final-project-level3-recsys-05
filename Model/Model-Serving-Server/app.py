@@ -1,3 +1,5 @@
+import os
+import json
 import asyncio
 import uvicorn
 from fastapi import FastAPI
@@ -12,18 +14,41 @@ app = FastAPI(title=title, description=description, docs_url=docs_url, redoc_url
 
 models = {}
 standard_model_types = []
+logging_dir = "./log"
 
+# TODO: 서버 로드시 Logging 기록 가져오기 (run_id, model_type, model_name)
 @app.on_event("startup")
 def startup_event():
-    models['multi_modal'] = ServingMultiModal(run_id='5b491351e5444463bfc4e968e85504a4' ,model_name='Seq-Item-GNN-Multi-Modal-v1')
-    models['lightGCN'] = ServingLightGCN(run_id='485f88f10c024cb88e4e12fbbb8a55b3',model_name='LightGCN-Embedding')
-    models['item2vec'] = ServingItem2Vec(run_id='ac8bf76b2e8c4e0d97a25f332a8781bf',model_name='Item2Vec-Embedding')
-    models['ease'] = ServingEASE(run_id='5298f9414e4b40febd1d56d9e4feb7b3',model_name='ease-item-similarity-matrix')
+    with open(os.path.join(logging_dir, 'model_types_to_run_id_and_model_name.json'), 'r', encoding = 'utf-8') as f:
+        model_types_to_run_id_and_model_name = json.load(f)
+
+    model_types = model_types_to_run_id_and_model_name.keys()
+    for model_type in model_types:
+        if model_type == 'multi_modal':
+            models[model_type] = ServingMultiModal(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
+        elif model_type == 'lightGCN':
+            models[model_type] = ServingLightGCN(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
+        elif model_type == 'item2vec':
+            models[model_type] = ServingItem2Vec(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
+        elif model_type == 'ease':
+            models[model_type] = ServingEASE(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
+    
     standard_model_types.extend(list(models.keys()))
 
-# TODO: 사버 종료시 Logging 기록
+# TODO: 사버 종료시 Logging 기록 (run_id, model_type, model_name)
+@app.on_event("shutdown")
+def shutdown_event():
+    model_types = models.keys()
+    
+    model_types_to_run_id_and_model_name = {}
+    for model_type in model_types:
+        model_types_to_run_id_and_model_name[model_type] = {"run_id" : models[model_type].run_id, "model_name": models[model_type].model_name}
+    
+    with open(os.path.join(logging_dir, "model_types_to_run_id_and_model_name.json"), "w") as json_file:
+        json.dump(model_types_to_run_id_and_model_name, json_file)
 
-# TODO: Model 추가 Load 구현
+
+# TODO: Model Update 구현
 
 @app.post('/models', response_model=Output, tags=['models'], description="추천 결과 반환")
 async def main(input: Input) -> Output:
