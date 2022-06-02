@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link th:href="@{/css/result.css}"
+          href="css/main.css" rel="stylesheet">
+    <script src="http://code.jquery.com/jquery-latest.js" defer></script>
+    <script th:src="@{/js/result.js}" src="js/result.js" defer></script>
+    <title>Santa BaekJoon</title>
+</head>
+<body>
+<div class="upper_side_bar">
+    <div>
+        <a href="/">
+            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        </a>
+    </div>
+    <div class="login_wrapper">
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
+            로그인
+        </a>
+        <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
+            로그아웃
+        </a>
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
+            회원가입
+        </a>
+    </div>
+</div>
+<div class="content_wrapper">
+    <div class="content">
+        <div class="hello_message_wrapper">
+            <span class="hello_message" th:text="${username} + ' 님의 추천결과는 다음과 같습니다.'">산타백준에 오신 것을 환영합니다.<br></span>
+            <span class="hello_message2" th:text="${mostCategory}">카테고리</span>
+            <span class="hello_message2" style="color: #222222">에 관심있으시군요.<br>추천 목록은 다음과 같습니다.<br></span>
+        </div>
+        <div class='result_wrapper'>
+            <div class="element_wrapper">
+                <div class="explain">
+                    <span id="head_probId">#</span>
+                    <span id="head_title">제목</span>
+                </div>
+                <ul class="result_ul" th:each="item: ${predictResult}">
+                    <li class="result_element">
+                        <a th:href="@{|https://www.acmicpc.net/problem/${item.problemId}|}" target="_blank" href="https://www.acmicpc.net/problem/1000">
+                            <span class="problem_number" th:text="${item.problemId}">문제번호</span>
+                            <span class="problem_name" th:text="${item.problemName}">문제이름</span>
+                        </a>
+                        <div class="like_button" th:value="${item.usedModelName}">
+                            <span>❤️</span>
+                        </div>
+                        <span class="li_deco"><br></span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div id='wrap'>
+    <footer>
+        <nav>
+            <!--            <a href='https://cocoder.tistory.com' target='_blank'>Blog</a> |-->
+            <!--            <a href='https://github.com/cocoder16' target='_blank'>Github</a>-->
+        </nav>
+        <p>
+            <span>Boostcamp-AI-tech-3 RecSys-05</span><br/>
+            <!--        <span>이메일 : cocoder16@gmail.com</span><br/>-->
+            <span>Copyright 2022. 알잘딱깔센. All Rights Reserved.</span>
+        </p>
+    </footer>
+</div>
+</body>
+</body>
+</html>

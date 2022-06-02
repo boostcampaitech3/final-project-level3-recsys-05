@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link th:href="@{/css/login.css?after}"
+          href="css/main.css" rel="stylesheet">
+    <title>Santa BaekJoon</title>
+</head>
+<body>
+<div class="upper_side_bar">
+    <div>
+        <a href="/">
+            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        </a>
+    </div>
+</div>
+<div class='hello'>환영합니다🎅</div>
+<div class='username_wrapper'>
+    <form action= "signup" method='POST'>
+        <input th:if="${already} == 'N'" class="username_input_box" type="text" placeholder="username" name="username">
+        <span th:if="${already} == 'Y'">이미 존재하는 username 입니다.</span>
+        <input th:if="${already} == 'Y'" style="border: 2px solid red;" class="username_input_box" type="text" placeholder="username" name="username">
+        <input class="username_input_box" type="password" placeholder="password" name="password">
+        <input class="username_input_box" type="text" placeholder="백준ID" name="bojId">
+        <button class="username_submitbutton" type="submit">signup</button>
+    </form>
+</div>
+</body>
+<div id='wrap'>
+    <footer>
+        <nav>
+            <!--            <a href='https://cocoder.tistory.com' target='_blank'>Blog</a> |-->
+            <!--            <a href='https://github.com/cocoder16' target='_blank'>Github</a>-->
+        </nav>
+        <p>
+            <span>Boostcamp-AI-tech-3 RecSys-05</span><br/>
+            <!--        <span>이메일 : cocoder16@gmail.com</span><br/>-->
+            <span>Copyright 2022. 알잘딱깔센. All Rights Reserved.</span>
+        </p>
+    </footer>
+</div>
+</body>
+</html>
