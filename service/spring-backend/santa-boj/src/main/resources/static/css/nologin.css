@@ -10,12 +10,16 @@ body {
 }
 
 .upper_side_bar {
+    z-index: 5;
     height: 8%;
     width: 100%;
     position: fixed;
     top: 0;
     left: 0;
     color: #fff;
+    background-color: #ffffff;
+    opacity: 90%;
+    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
 }
 
 .logo {

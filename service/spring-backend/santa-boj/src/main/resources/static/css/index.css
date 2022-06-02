@@ -17,6 +17,9 @@ body {
     top: 0;
     left: 0;
     color: #fff;
+    background-color: #ffffff;
+    opacity: 90%;
+    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
 }
 
 .logo {
@@ -62,7 +65,7 @@ body {
     background: rgba(179,229,252,0.30000001192092896);
     opacity: 1;
     position: absolute;
-    top: 80px;
+    top: 8%;
     left: 0px;
     overflow: hidden;
 }
