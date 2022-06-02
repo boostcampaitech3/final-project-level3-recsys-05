@@ -1,0 +1,113 @@
+
+
+a:link { color: black; text-decoration: none;}
+
+a:visited { color: black; text-decoration: none;}
+
+a:hover { color: royalblue; text-decoration: underline;}
+
+.logo {
+    font-size: 20px;
+    margin-left: 10px;
+}
+.upper_side_bar{
+    height: 8%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    /*background-color: royalblue;*/
+}
+
+.login_button {
+    display: flex;
+    /*background-color: tomato;*/
+    width: 1000px;
+    height: 50px;
+    float: right;
+    justify-content: right;
+    padding-right: 10px;
+}
+
+.upper_element {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.main_banner {
+    font-size: 60px;
+    width: 100%;
+    height: 500px;
+    font-weight: 700;
+    margin: 10% 0 0 0;
+    text-align: center;
+    background-color: #B3E5FC;
+
+}
+
+.left_message {
+    font-size: 50px;
+    font-weight: normal;
+    position: absolute;
+    text-align: left;
+    left: 5%;
+    line-height: 0.5em;
+    text-decoration: underline;
+}
+
+.welcome_member {
+    text-align: center;
+    font-size: 30px;
+    margin: 5px 0 5px 0;
+}
+
+.username_wrapper {
+    display: flex;
+    margin: 20px 20% 0 20%;
+    justify-content: center;
+}
+
+.username_input_box {
+    font-size: 30px;
+    margin: auto;
+    text-align: center;
+}
+
+.username_submitbutton {
+    background-color: royalblue;
+    color: white;
+    border-radius: 10px;
+    text-align: center;
+    height: 40px;
+    width: 90px;
+    font-weight: 400;
+    margin-left: 6px;
+    font-size: 20px;
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
+
+.result_wrapper {
+    /*background-color:;*/
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+}
+.explain {
+    width: 300px;
+    font-size: 20px;
+    text-align: center;
+    height: 30px;
+    margin-bottom: 20px;
+}
+
+.result_element {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.element_wrapper {
+    justify-content: center;
+    /*background-color: aqua;*/
+}

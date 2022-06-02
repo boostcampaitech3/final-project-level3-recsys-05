@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link th:href="@{/css/main.css}"
+          href="css/main.css" rel="stylesheet">
+    <title>Santa BaekJoon</title>
+</head>
+<body>
+<div class="upper_side_bar">
+    <div>
+        <a class="logo" href="/">Home</a>
+    </div>
+</div>
+<div class='hello'>로그인🎅</div>
+<div class='username_wrapper'>
+    <form action= "login" method='POST'>
+        <input class="username_input_box" type="text" placeholder="username" name="username">
+        <input class="username_input_box" type="password" placeholder="password" name="password">
+        <button class="username_submitbutton" type="submit">로그인</button>
+    </form>
+</div>
+</body>
+</html>
