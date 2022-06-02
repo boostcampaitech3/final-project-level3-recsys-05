@@ -114,3 +114,5 @@ if __name__ == '__main__':
         mlflow.log_param("lr", config.lr)
 
         main(config)
+    
+    # TODO: 모델 학습 완료 후 모델 서빙 서버에 모델 업데이트 requests 보내기 (model_type, run_id, model_name)
