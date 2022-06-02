@@ -31,6 +31,6 @@ def thompson_sampling(model_types:list, model_type_click_dict:dict) -> str:
     }
     '''
 
-    sampling_list = [beta.rvs(model_type_click_dict[model_type]['pos_click'], model_type_click_dict[model_type]['total_view']) for model_type in model_types]
+    sampling_list = [beta.rvs(max(model_type_click_dict[model_type]['pos_click'], 1), max(model_type_click_dict[model_type]['total_view'], 1)) for model_type in model_types]
     idx = np.argmax(sampling_list)
     return model_types[idx]

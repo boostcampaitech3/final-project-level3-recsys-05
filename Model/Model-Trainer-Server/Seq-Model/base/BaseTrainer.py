@@ -2,7 +2,9 @@ import os
 import torch
 from abc import abstractmethod
 import mlflow
+import pickle
 
+PICKLE_PROTOCOL = 4
 
 class BaseTrainer:
     """
@@ -17,6 +19,7 @@ class BaseTrainer:
         self.data_loader = data_loader
         self.valid_data_loader = valid_data_loader
         
+        self.config = config
         self.epochs = config.epochs
         self.save_dir = config.save_dir
         self.model_name = config.model_name
@@ -66,4 +69,12 @@ class BaseTrainer:
 
         self.model.load_state_dict(torch.load(os.path.join(self.save_dir, self.model_name + '.pt')))
         mlflow.pytorch.log_state_dict(self.model.state_dict(), self.model_name)
+
+        # Embedding 저징
+        embedding = self.model.emb_dict[self.config.embedding_name].weight.detach().cpu().numpy()[1:, :]
+        with open(os.path.join(self.save_dir, self.config.embedding_name + '.pickle'), 'wb') as file:
+            pickle.dump(embedding, file, protocol = PICKLE_PROTOCOL)
+
+        mlflow.log_artifact(os.path.join(self.save_dir, self.config.embedding_name + '.pickle'), "Embedding")
+
         print(f'BEST | Epoch: {self.best_epoch:3d}| Train loss: {self.best_loss:.5f}| NDCG@10: {self.best_ndcg:.5f}| HIT@10: {self.best_hit:.5f}')

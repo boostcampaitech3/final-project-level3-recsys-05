@@ -79,7 +79,6 @@ def main(config):
 
     trainer.train()
 
-    # TODO: MLflow에 Embedding save 작성
 
 if __name__ == '__main__':
     args = argparse.ArgumentParser(description="PyTorch Template")
@@ -107,4 +106,17 @@ if __name__ == '__main__':
 
     with mlflow.start_run(run_id=run.info.run_id):
         mlflow.set_tag('mlflow.user', config.user)
+
+        mlflow.log_param("epochs", config.epochs)
+        mlflow.log_param("batch_size", config.batch_size)
+        mlflow.log_param("num_workers", config.num_workers)
+        mlflow.log_param("hidden_units", config.hidden_units)
+        mlflow.log_param("num_heads", config.num_heads)
+        mlflow.log_param("num_layers", config.num_layers)
+        mlflow.log_param("dropout_rate", config.dropout_rate)
+        mlflow.log_param("lr", config.lr)
+        mlflow.log_param("emb_cols", config.emb_cols)
+
         main(config)
+    
+    # TODO: 모델 학습 완료 후 모델 서빙 서버에 모델 업데이트 requests 보내기 (model_type, run_id, model_name)

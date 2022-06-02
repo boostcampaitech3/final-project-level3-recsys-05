@@ -17,6 +17,7 @@ class BaseTrainer:
         self.data_loader = data_loader
         self.valid_data_loader = valid_data_loader
         
+        self.config = config
         self.epochs = config.epochs
         self.save_dir = config.save_dir
         self.model_name = config.model_name

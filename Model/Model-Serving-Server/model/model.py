@@ -5,15 +5,22 @@ import numpy as np
 from abc import abstractmethod
 from sklearn.metrics.pairwise import cosine_similarity
 from .modules import MultiModal
+import mlflow
+from mlflow.tracking import MlflowClient
 
-MODEL_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Serving-Server/db/model'
+remote_server_uri = "http://34.64.110.227:5000"
+mlflow.set_tracking_uri(remote_server_uri)
 
 class ServingBase:
-    def __init__(self, model_name, model_path=MODEL_PATH):
-        self.model = self.init_model(model_name, model_path)
+    def __init__(self, run_id:str, model_name:str):
+        self.run_id = run_id
+        self.model_name = model_name
+        self.model = self.init_model(run_id, model_name)
 
-    def init_model(self, model_name, model_path):
-        with open(os.path.join(model_path, model_name + '.pickle'), 'rb') as file: 
+    def init_model(self, run_id:str, model_name:str):
+        client = MlflowClient()
+        local_path = client.download_artifacts(run_id, 'Embedding', './')
+        with open(os.path.join(local_path, model_name + '.pickle'), 'rb') as file: 
             model = pickle.load(file)
         return model
     
@@ -26,8 +33,8 @@ class ServingBase:
 
 
 class ServingEASE(ServingBase):
-    def __init__(self, model_name, model_path=MODEL_PATH):
-        super().__init__(model_name, model_path)
+    def __init__(self, run_id: str, model_name: str):
+        super().__init__(run_id, model_name)
 
     def predict(self, problem_seq):
         mat = np.zeros(shape = (1, self.model.shape[0]))
@@ -38,8 +45,8 @@ class ServingEASE(ServingBase):
 
 
 class ServingItem2Vec(ServingBase):
-    def __init__(self, model_name, model_path=MODEL_PATH):
-        super().__init__(model_name, model_path)
+    def __init__(self, run_id: str, model_name: str):
+        super().__init__(run_id, model_name)
 
     def predict(self, problem_seq):
         output = cosine_similarity(self.model[problem_seq[0]].reshape(1, -1), self.model)[0]
@@ -47,8 +54,8 @@ class ServingItem2Vec(ServingBase):
 
 
 class ServingLightGCN(ServingBase):
-    def __init__(self, model_name, model_path=MODEL_PATH):
-        super().__init__(model_name, model_path)
+    def __init__(self, run_id: str, model_name: str):
+        super().__init__(run_id, model_name)
 
     def predict(self, problem_seq):
         output = cosine_similarity(self.model[problem_seq[0]].reshape(1, -1), self.model)[0]
@@ -56,13 +63,14 @@ class ServingLightGCN(ServingBase):
 
 
 class ServingMultiModal(ServingBase):
-    def __init__(self, model_name, model_path=MODEL_PATH):
-        super().__init__(model_name, model_path)
+    def __init__(self, run_id: str, model_name: str):
+        super().__init__(run_id, model_name)
     
-    def init_model(self, model_name, model_path):
-        self.device = 'cuda' if torch.cuda.is_available() else 'cpu'
-        model = MultiModal().to(self.device)
-        model.load_state_dict(torch.load(os.path.join(model_path, model_name + '.pt'), map_location = self.device))
+    def init_model(self, run_id, model_name):
+        state_dict_uri = f"gs://santa-mlflow-artifact/8/{run_id}/artifacts/{model_name}"
+        device = 'cuda' if torch.cuda.is_available() else 'cpu'
+        model = MultiModal().to(device)
+        model.load_state_dict(mlflow.pytorch.load_state_dict(state_dict_uri))
         return model
 
     def predict(self, problem_seq):

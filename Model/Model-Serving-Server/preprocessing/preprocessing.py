@@ -2,7 +2,7 @@ import os
 import json
 import numpy as np
 
-VAL_TO_IDX_DATA_PATH = '/opt/ml/final-project-level3-recsys-05/Model/Model-Serving-Server/db'
+VAL_TO_IDX_DATA_PATH = './db'
 
 with open(os.path.join(VAL_TO_IDX_DATA_PATH, 'problem_id_to_idx.json'), 'r', encoding = 'utf-8') as f:
     problem_id2idx = json.load(f)
