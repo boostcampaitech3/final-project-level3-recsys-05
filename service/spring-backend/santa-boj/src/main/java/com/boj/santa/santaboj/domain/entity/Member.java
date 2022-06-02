@@ -36,4 +36,8 @@ public class Member {
         member.totalView = 0;
         return member;
     }
+
+    public void increaseCountOfTotalView(){
+        this.totalView += 1;
+    }
 }

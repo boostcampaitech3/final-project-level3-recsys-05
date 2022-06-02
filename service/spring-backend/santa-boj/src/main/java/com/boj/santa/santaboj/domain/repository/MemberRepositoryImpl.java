@@ -37,4 +37,10 @@ public class MemberRepositoryImpl implements MemberRepository{
         }
         return members.get(0);
     }
+
+    @Override
+    @Transactional
+    public void increaseViewCount(Member member){
+        member.increaseCountOfTotalView();
+    }
 }

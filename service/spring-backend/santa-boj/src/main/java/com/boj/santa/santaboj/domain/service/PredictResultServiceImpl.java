@@ -19,31 +19,57 @@ import java.util.*;
 
 @Service
 @Slf4j
-public class PredictResultServiceImpl implements PredictResultService{
+public class PredictResultServiceImpl implements PredictResultService {
 
     private final ObjectMapper objectMapper;
     private final String url;
     private final UserFeedbackRepository userFeedbackRepository;
+    private final MemberService memberService;
+
+    @Value("${model.kind}")
+    private List<String> modelNames;
+
 
     public PredictResultServiceImpl(
             @Value("${model.server}") String url,
             ObjectMapper objectMapper,
-            UserFeedbackRepository userFeedbackRepository
-    ){
+            UserFeedbackRepository userFeedbackRepository,
+            MemberService memberService
+    ) {
         this.objectMapper = objectMapper;
         this.url = url;
         this.userFeedbackRepository = userFeedbackRepository;
+        this.memberService = memberService;
     }
 
 
     @Override
-    public PredictResultDTO getPredictResult(String username) throws JsonProcessingException {
+    public PredictResultDTO getPredictResult(String bojId, boolean isMember, Member member) throws JsonProcessingException {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(new MediaType("application", "json", StandardCharsets.UTF_8));
-
         Map<String, Object> map = new HashMap<>();
-        map.put("username", username);
+        Map<String, Map<String, Long>> modelLikedMap = new HashMap<>();
+
+        if (isMember) {
+//            Member userByUsername = memberService.findUserByUsername();
+
+            for (String model : modelNames) {
+                Map<String, Long> eachModelLikedMap = new HashMap<>();
+
+                Long count = userFeedbackRepository.getUserFeedbackCount(model, member);
+                System.out.println("model = " + model);
+                System.out.println("count = " + count);
+                eachModelLikedMap.put("pos_click", count);
+                eachModelLikedMap.put("total_view", member.getTotalView().longValue());
+                modelLikedMap.put(model, eachModelLikedMap);
+            }
+
+        }
+        map.put("model_type_click", modelLikedMap);
+
+        map.put("username", bojId);
         map.put("key", 123456);
+
 
         String body = objectMapper.writeValueAsString(map);
 
@@ -54,8 +80,8 @@ public class PredictResultServiceImpl implements PredictResultService{
         PredictResultDTO resultDTO;
         try {
             resultDTO = objectMapper.readValue(responseEntity.getBody(), PredictResultDTO.class);
-        } catch (MismatchedInputException e){
-            log.error("not found user in boj [{}]", username);
+        } catch (MismatchedInputException e) {
+            log.error("not found user in boj [{}]", bojId);
             return null;
         }
 
@@ -71,11 +97,11 @@ public class PredictResultServiceImpl implements PredictResultService{
 
         StringBuffer problemIds = new StringBuffer("");
 
-        for (String problemId : problems){
+        for (String problemId : problems) {
             problemIds.append(problemId);
             problemIds.append(',');
         }
-        problemIds.deleteCharAt(problemIds.length()-1);
+        problemIds.deleteCharAt(problemIds.length() - 1);
 
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://solved.ac/api/v3/problem/lookup")
@@ -90,13 +116,13 @@ public class PredictResultServiceImpl implements PredictResultService{
         Map[] ProblemInfoDTO = objectMapper.readValue(responseEntity.getBody(), Map[].class);
         HashMap<String, String> problemInfoMap = new HashMap<>();
 
-        for(Map result : ProblemInfoDTO){
+        for (Map result : ProblemInfoDTO) {
             Map<String, Object> real_object = (Map<String, Object>) result;
             Map<String, String> probInfo = new HashMap<>();
-            problemInfoMap.put(Integer.toString((Integer)real_object.get("problemId")), (String) real_object.get("titleKo"));
+            problemInfoMap.put(Integer.toString((Integer) real_object.get("problemId")), (String) real_object.get("titleKo"));
         }
 
-        
+
         return problemInfoMap;
     }
 

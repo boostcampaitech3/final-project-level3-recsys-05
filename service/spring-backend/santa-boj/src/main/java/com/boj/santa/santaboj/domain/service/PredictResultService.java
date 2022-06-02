@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface PredictResultService {
-    PredictResultDTO getPredictResult(String bojId) throws MalformedURLException, JsonProcessingException;
+    PredictResultDTO getPredictResult(String bojId, boolean isMember, Member member) throws MalformedURLException, JsonProcessingException;
     Map<String, String> problemsTitles(List<String> problems) throws JsonProcessingException;
     UserFeedback saveFeedback(Member member, String modelName);
 }

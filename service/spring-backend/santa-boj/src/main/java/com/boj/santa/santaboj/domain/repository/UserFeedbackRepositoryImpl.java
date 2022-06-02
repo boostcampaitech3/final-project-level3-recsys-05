@@ -28,8 +28,12 @@ public class UserFeedbackRepositoryImpl implements UserFeedbackRepository{
         Long memberId = member.getId();
 
         List<Long> resultList = entityManager
-                .createQuery("select count(u) from UserFeedback u where u.member.id =: id group by u.modelName", Long.class)
+                .createQuery(
+                        "select count(u) " +
+                        "from UserFeedback u " +
+                        "where u.member.id =: id and u.modelName=:targetModelName" + " group by u.modelName", Long.class)
                 .setParameter("id", memberId)
+                .setParameter("targetModelName", targetModelName)
                 .getResultList();
 
         if (resultList.size() == 0){

@@ -1,7 +1,9 @@
 package com.boj.santa.santaboj.service;
 
+import com.boj.santa.santaboj.domain.entity.Member;
 import com.boj.santa.santaboj.domain.repository.UserFeedbackRepository;
 import com.boj.santa.santaboj.domain.repository.UserFeedbackRepositoryImpl;
+import com.boj.santa.santaboj.domain.service.MemberService;
 import com.boj.santa.santaboj.domain.service.PredictResultDTO;
 import com.boj.santa.santaboj.domain.service.PredictResultService;
 import com.boj.santa.santaboj.domain.service.PredictResultServiceImpl;
@@ -18,13 +20,15 @@ class PredictResultServiceImplTest {
 
     @Mock
     UserFeedbackRepository userFeedbackRepository;
+    @Mock
+    MemberService memberService;
 
     PredictResultService predictResultService = new PredictResultServiceImpl(
-            "http://101.101.218.250:30002/models", new ObjectMapper(), userFeedbackRepository);
+            "http://101.101.218.250:30002/models", new ObjectMapper(), userFeedbackRepository, memberService);
 
     @Test
     public void test1() throws MalformedURLException, JsonProcessingException {
-        PredictResultDTO predictResultDTO = predictResultService.getPredictResult("kjpark4321");
+        PredictResultDTO predictResultDTO = predictResultService.getPredictResult("kjpark4321", true, null);
 
         Assertions.assertThat(predictResultDTO).isNotNull();
 

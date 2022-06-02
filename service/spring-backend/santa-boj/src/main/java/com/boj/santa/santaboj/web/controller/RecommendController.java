@@ -1,6 +1,7 @@
 package com.boj.santa.santaboj.web.controller;
 
 import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.repository.MemberRepository;
 import com.boj.santa.santaboj.domain.service.MemberService;
 import com.boj.santa.santaboj.domain.service.PredictResultDTO;
 import com.boj.santa.santaboj.domain.service.PredictResultService;
@@ -25,12 +26,13 @@ import java.util.Map;
 public class RecommendController {
 
     private final PredictResultService predictResultService;
+    private final MemberRepository memberRepository;
     private final MemberService memberService;
 
     @GetMapping("/nologin")
     public String nologinResult(@RequestParam String bojId, Model model) throws JsonProcessingException, MalformedURLException {
 
-        PredictResultDTO predictResult = predictResultService.getPredictResult(bojId);
+        PredictResultDTO predictResult = predictResultService.getPredictResult(bojId, false, null);
 
         List<String> problemIdList = new ArrayList<>();
 
@@ -58,10 +60,13 @@ public class RecommendController {
 
     @GetMapping("/result")
     public String recommendResult(Model model) throws MalformedURLException, JsonProcessingException {
-        Member member = memberService.findMemberByAuthentication();
-        String bojId = member.getBojId();
+        Member authMember = memberService.findMemberByAuthentication();
+        Member userByUsername = memberService.findUserByUsername(authMember.getUsername());
+        memberRepository.increaseViewCount(userByUsername);
 
-        PredictResultDTO predictResult = predictResultService.getPredictResult(bojId);
+        String bojId = userByUsername.getBojId();
+
+        PredictResultDTO predictResult = predictResultService.getPredictResult(bojId, true, userByUsername);
 //
 
         List<String> problemIdList = new ArrayList<>();
@@ -85,7 +90,7 @@ public class RecommendController {
         model.addAttribute("principal", principal);
 
 
-        model.addAttribute("username", member.getUsername());
+        model.addAttribute("username", userByUsername.getUsername());
         return "result";
     }
 
