@@ -96,8 +96,10 @@ public class RecommendController {
         String likedModel = likeInfo.get("modelName");
         System.out.println("likedModel = " + likedModel);
 
-        HashMap<String, String> responseData = new HashMap<>();
+        Member member = memberService.findMemberByAuthentication();
+        predictResultService.saveFeedback(member, likedModel);
 
+        HashMap<String, String> responseData = new HashMap<>();
         responseData.put("result", "success");
         return responseData;
 

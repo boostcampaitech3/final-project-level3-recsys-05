@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -14,6 +15,7 @@ public class MemberRepositoryImpl implements MemberRepository{
     private final EntityManager entityManager;
 
     @Override
+    @Transactional
     public Member save(Member member) {
         entityManager.persist(member);
         return member;

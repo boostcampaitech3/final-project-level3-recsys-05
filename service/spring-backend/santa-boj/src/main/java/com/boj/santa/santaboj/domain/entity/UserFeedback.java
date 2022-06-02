@@ -20,4 +20,13 @@ public class UserFeedback {
     @Column
     private String modelName;
 
+    public static UserFeedback createUserFeedback(Member member, String modelName){
+
+        UserFeedback userFeedback = new UserFeedback();
+        userFeedback.member = member;
+        userFeedback.modelName = modelName;
+
+        return userFeedback;
+    }
+
 }

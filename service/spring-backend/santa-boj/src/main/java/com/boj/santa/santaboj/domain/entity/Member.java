@@ -22,6 +22,9 @@ public class Member {
     @Column(nullable = false)
     private String bojId;
 
+    @Column(nullable = false)
+    private Integer totalView;
+
     @OneToMany(mappedBy = "member")
     private List<UserFeedback> userFeedbackList;
 
@@ -30,6 +33,7 @@ public class Member {
         member.username = username;
         member.password = password;
         member.bojId = bojId;
+        member.totalView = 0;
         return member;
     }
 }

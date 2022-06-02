@@ -1,8 +1,12 @@
 package com.boj.santa.santaboj.domain.service;
 
+import com.boj.santa.santaboj.domain.entity.Member;
+import com.boj.santa.santaboj.domain.entity.UserFeedback;
+import com.boj.santa.santaboj.domain.repository.UserFeedbackRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -19,10 +23,16 @@ public class PredictResultServiceImpl implements PredictResultService{
 
     private final ObjectMapper objectMapper;
     private final String url;
+    private final UserFeedbackRepository userFeedbackRepository;
 
-    public PredictResultServiceImpl(@Value("${model.server}") String url, ObjectMapper objectMapper){
+    public PredictResultServiceImpl(
+            @Value("${model.server}") String url,
+            ObjectMapper objectMapper,
+            UserFeedbackRepository userFeedbackRepository
+    ){
         this.objectMapper = objectMapper;
         this.url = url;
+        this.userFeedbackRepository = userFeedbackRepository;
     }
 
 
@@ -85,8 +95,18 @@ public class PredictResultServiceImpl implements PredictResultService{
             Map<String, String> probInfo = new HashMap<>();
             problemInfoMap.put(Integer.toString((Integer)real_object.get("problemId")), (String) real_object.get("titleKo"));
         }
+
+
         
         return problemInfoMap;
+    }
+
+    @Override
+    public UserFeedback saveFeedback(Member member, String modelName) {
+
+        UserFeedback userFeedback = UserFeedback.createUserFeedback(member, modelName);
+        userFeedbackRepository.saveUserFeedback(userFeedback);
+        return userFeedback;
     }
 
 
