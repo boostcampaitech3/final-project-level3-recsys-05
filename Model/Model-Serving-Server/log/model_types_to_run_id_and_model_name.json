@@ -1,6 +1,1 @@
-{
-    "multi_modal": {"run_id": "5b491351e5444463bfc4e968e85504a4", "model_name": "Seq-Item-GNN-Multi-Modal-v1"}, 
-    "lightGCN": {"run_id": "485f88f10c024cb88e4e12fbbb8a55b3", "model_name": "LightGCN-Embedding"}, 
-    "item2vec": {"run_id": "ac8bf76b2e8c4e0d97a25f332a8781bf", "model_name": "Item2Vec-Embedding"}, 
-    "ease": {"run_id": "5298f9414e4b40febd1d56d9e4feb7b3", "model_name": "ease-item-similarity-matrix"}
-}
+{"multi_modal": {"run_id": "5b491351e5444463bfc4e968e85504a4", "model_name": "Seq-Item-GNN-Multi-Modal-v1"}, "lightGCN": {"run_id": "485f88f10c024cb88e4e12fbbb8a55b3", "model_name": "LightGCN-Embedding"}, "item2vec": {"run_id": "ac8bf76b2e8c4e0d97a25f332a8781bf", "model_name": "Item2Vec-Embedding"}, "ease": {"run_id": "5298f9414e4b40febd1d56d9e4feb7b3", "model_name": "ease-item-similarity-matrix"}}
