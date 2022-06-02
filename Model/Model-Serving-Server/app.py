@@ -13,8 +13,14 @@ from collections import deque
 app = FastAPI(title=title, description=description, docs_url=docs_url, redoc_url=redoc_url)
 
 models = {}
-standard_model_types = []
 logging_dir = "./log"
+standard_model_type_click_dict = {
+                        'item2vec' : {'pos_click' : 4, 'total_view' : 25},
+                        'ease' : {'pos_click' : 7, 'total_view' : 25},
+                        'lightGCN' : {'pos_click' : 7, 'total_view' : 25},
+                        'multi_modal' : {'pos_click' : 7, 'total_view' : 25},
+                    }
+
 
 # TODO: 서버 로드시 Logging 기록 가져오기 (run_id, model_type, model_name)
 @app.on_event("startup")
@@ -32,8 +38,7 @@ def startup_event():
             models[model_type] = ServingItem2Vec(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
         elif model_type == 'ease':
             models[model_type] = ServingEASE(run_id=model_types_to_run_id_and_model_name[model_type]["run_id"],model_name=model_types_to_run_id_and_model_name[model_type]["model_name"])
-    
-    standard_model_types.extend(list(models.keys()))
+
 
 # TODO: 사버 종료시 Logging 기록 (run_id, model_type, model_name)
 @app.on_event("shutdown")
@@ -77,14 +82,9 @@ async def main(input: Input) -> Output:
                     tag = serch_best_tag(lately_solved_problem_seq)
 
                     # TODO: DB 연동 or request 추가 (비로그인시 - 우리가 정한 비율로)
-                    model_type_click_dict = {
-                        'item2vec' : {'pos_click' : 4, 'total_view' : 25},
-                        'ease' : {'pos_click' : 7, 'total_view' : 25},
-                        'lightGCN' : {'pos_click' : 7, 'total_view' : 25},
-                        'multi_modal' : {'pos_click' : 7, 'total_view' : 25},
-                    }
+                    model_type_click_dict = input.model_type_click if input.model_type_click else standard_model_type_click_dict
 
-                    model_types = list(model_type_click_dict.keys()) if model_type_click_dict else standard_model_types
+                    model_types = list(model_type_click_dict.keys())
                     inferences = [inference(models[model_type], lately_solved_problem_seq, total_solved_problem_seq) for model_type in model_types]
                     inferences = await asyncio.gather(*inferences)
                     model_type_to_output = {model_type:deque(output) for model_type, output in zip(model_types, inferences)}

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Dict
 from pydantic import BaseModel, Field
 
 title="SantaBOJ"
@@ -23,6 +23,7 @@ class ModelOutput(BaseModel):
 class Input(BaseModel):
     key: int= Field(description='인증을 위한 key 값')
     username: str= Field(description='추천을 위한 유저아이디')
+    model_type_click: Dict = Field(default=None, description='로그인 유저의 모델 feedback Data')
 
 class Output(BaseModel):
     problems: List[ModelOutput] = Field(description='''
