@@ -10,6 +10,7 @@ body {
 }
 
 .upper_side_bar {
+    z-index: 5;
     height: 8%;
     width: 100%;
     position: fixed;
@@ -143,6 +144,9 @@ body {
 }
 
 .like_button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     /*background-color: rgb(253,60,86);*/
     width: 30px;
     height: 30px;

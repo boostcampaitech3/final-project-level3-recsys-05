@@ -48,7 +48,9 @@
                             <span class="problem_number" th:text="${item.problemId}">문제번호</span>
                             <span class="problem_name" th:text="${item.problemName}">문제이름</span>
                         </a>
-                        <div class="like_button" th:value="${item.usedModelName}">❤️</div>
+                        <div class="like_button" th:value="${item.usedModelName}">
+                            <span>❤️</span>
+                        </div>
                         <span class="li_deco"><br></span>
                     </li>
                 </ul>

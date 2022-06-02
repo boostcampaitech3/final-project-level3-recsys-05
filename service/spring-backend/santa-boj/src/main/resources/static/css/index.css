@@ -10,6 +10,7 @@ body {
 }
 
 .upper_side_bar {
+    z-index: 3;
     height: 8%;
     width: 100%;
     position: fixed;
@@ -57,7 +58,7 @@ body {
 
 .backboard {
     width: 100%;
-    height: 380px;
+    height: 35%;
     background: rgba(179,229,252,0.30000001192092896);
     opacity: 1;
     position: absolute;
@@ -150,7 +151,7 @@ body {
     align-content: center;
     justify-content: center;
     position: absolute;
-    top: 550px;
+    top: 50%;
     width: 100%;
 }
 
