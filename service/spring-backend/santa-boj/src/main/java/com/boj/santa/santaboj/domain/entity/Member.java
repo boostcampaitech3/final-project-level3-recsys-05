@@ -22,7 +22,7 @@ public class Member {
     @Column(nullable = false)
     private String bojId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "integer default 0")
     private Integer totalView;
 
     @OneToMany(mappedBy = "member")

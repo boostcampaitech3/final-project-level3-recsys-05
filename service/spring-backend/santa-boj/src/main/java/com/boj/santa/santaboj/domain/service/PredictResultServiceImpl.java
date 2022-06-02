@@ -96,7 +96,6 @@ public class PredictResultServiceImpl implements PredictResultService{
             problemInfoMap.put(Integer.toString((Integer)real_object.get("problemId")), (String) real_object.get("titleKo"));
         }
 
-
         
         return problemInfoMap;
     }
