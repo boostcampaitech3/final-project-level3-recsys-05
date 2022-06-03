@@ -70,7 +70,7 @@ class ServingMultiModal(ServingBase):
         state_dict_uri = f"gs://santa-mlflow-artifact/8/{run_id}/artifacts/{model_name}"
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
         model = MultiModal().to(device)
-        model.load_state_dict(mlflow.pytorch.load_state_dict(state_dict_uri))
+        model.load_state_dict(mlflow.pytorch.load_state_dict(state_dict_uri, map_location=device))
         return model
 
     def predict(self, problem_seq):
