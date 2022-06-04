@@ -1,6 +1,6 @@
-a:link { color: black; text-decoration: none;}
+a:link { text-decoration: none;}
 
-a:visited { color: black; text-decoration: none;}
+a:visited { text-decoration: none;}
 
 * {
     box-sizing: border-box;
@@ -9,8 +9,9 @@ body {
     font-size: 14px;
 }
 
+
 .upper_side_bar {
-    z-index: 5;
+    z-index: 3;
     height: 8%;
     width: 100%;
     position: fixed;
@@ -62,94 +63,90 @@ body {
 .upper_element:hover {
     color: #222222;
 }
-/* ############### 공통된 부분 ################## */
 
-.content_wrapper {
-    position: absolute;
-    top: 100px;
+
+.main_banner {
     width: 100%;
-
-}
-
-.content {
-    height: 1300px;
-    margin: auto;
-    height: auto;
-}
-
-
-.hello_message_wrapper {
+    height: 50px;
+    /*margin: 150px 0 0 5%;*/
     position: absolute;
-    left: 100px;
-    top: 80px;
+    top: 150px;
+    left: 5%;
+}
+
+.main_message {
+    position: relative;
+    font-family: NanumSquare;
     font-size: 30px;
+    font-weight: 700;
+    text-align: left;
+    line-height: 0.5em;
 }
 
-.hello_message {
-    display: block;
-    margin-bottom: 30px;
+.newbie_wrapper {
+    display: flex;
+    /*margin: 20px 10% 0 10%;*/
+    height: 300px;
+    position: absolute;
+    top: 180px;
+    width: 1500px;
+    /*top: 50%;*/
+    left: 50%;
+    transform: translate(-50%, 0%);
 }
 
-.hello_message2 {
-    font-size: 20px;
-    color: royalblue;
+.newbie_area {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    background-position: center center;
+    opacity: 1;
+    margin: 5% 5% 0;
+    flex-flow: row nowrap;
+    overflow: hidden;
 }
 
-.result_wrapper {
+.newbie_box {
     display: flex;
     flex-direction: column;
-    position: relative;
-    margin: auto;
-    top: 300px;
-    width: 1000px;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background: linear-gradient(rgba(229,229,229,1), rgba(229,229,229,0));
+    opacity: 1;
+    overflow: hidden;
+    z-index: 2;
 }
 
-.element_wrapper {
-    width: 1000px;
-    margin: 0 auto;
+.newbie_main {
+    width: 90%;
+    color: rgba(64,64,64,1);
+    margin: 40% 10% 10% 0;
+    font-family: NanumSquare;
+    font-weight: 700;
+    font-size: 1.8rem;
+    opacity: 1;
+    text-align: right;
+    justify-content: flex-end;
+    z-index: 1;
 }
 
-.explain {
-    font-size: 20px;
-    font-weight: bold;
-    border-bottom: 1px solid #222222;
+.newbie_main:hover {
+    color: #999999;
 }
 
-#head_title {
-    margin-left: 450px;
-}
-#head_probId {
-    margin-left: 30px;
-}
 
-/*.explain:after {*/
-/*    position: absolute;*/
-/*    top: 40px;*/
-/*    right: 0;*/
-/*    content: "";*/
-/*    width: 100%;*/
-/*    height: 1px;*/
-/*    background: #222222;*/
-/*}*/
-
-.result_element {
-    font-size: 20px;
-    line-height: 20px;
-    align-content: center;
-    height: 40px;
-    border-bottom: 1px solid #dddfe0;
-}
-
-.problem_number {
-    position: absolute;
-    font-weight: bold;
-    margin: 10px;
-}
-
-.problem_name {
-    position: absolute;
-    left: 150px;
-    margin: 10px;
+.newbie_text {
+    width: 200px;
+    color: rgba(64,64,64,1);
+    margin: 30px 0 0 30px;
+    font-family: NanumSquare;
+    font-weight: Bold;
+    font-size: 1.5rem;
+    line-height: 150%;
+    opacity: 1;
+    text-align: left;
+    z-index: 2;
 }
 
 html, body {
@@ -159,7 +156,7 @@ html, body {
 
 #wrap {
     z-index: -1;
-    min-height: 130vh;
+    min-height: 100vh;
     position: relative;
     width: 100%;
     background-color: #ffffff;
@@ -170,7 +167,6 @@ section {
 }
 
 footer {
-    z-index: 5;
     width: 100%;
     height: 8%;
     bottom: 0px;

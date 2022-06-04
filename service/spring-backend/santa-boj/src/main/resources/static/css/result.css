@@ -20,6 +20,8 @@ body {
     background-color: #ffffff;
     opacity: 90%;
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+    display: flex;
+    align-items: center;
 }
 
 .logo {
@@ -28,6 +30,7 @@ body {
     top: 25px;
     left: 25px;
     opacity: 1;
+    visibility: hidden;
 }
 
 .login_wrapper {
@@ -46,7 +49,7 @@ body {
 
 .upper_element {
     font-size: 20px;
-    font-family: Arial;
+    font-family: NanumSquare;
     margin-right: 15px;
     color: #999999;
 }
@@ -157,9 +160,11 @@ body {
     font-size: 15px;
     /*color: #ffffff;*/
     text-align: center;
+    opacity: 50%;
 }
 .like_button:hover {
     cursor: pointer;
+    opacity: 100%;
 }
 
 html, body {
@@ -182,7 +187,7 @@ section {
 footer {
     z-index: 5;
     width: 100%;
-    height: 90px;
+    height: 8%;
     bottom: 0px;
     position: absolute;
     border-top: 1px solid #c4c4c4;

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+    <link th:href="@{/css/newbie.css?after}"
+          href="css/newbie.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=NanumSquare&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet" />
+</head>
+<body>
+<div class="upper_side_bar">
+    <div>
+        <a href="/">
+            <img src="SantaBOJ_logo.png" a class="logo" href="/"></a>
+        </a>
+    </div>
+    <div class="login_wrapper">
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/login">
+            로그인
+        </a>
+        <a class="upper_element" th:if="${principal} != 'anonymousUser'" href="/logout">
+            로그아웃
+        </a>
+        <a class="upper_element" th:if="${principal} == 'anonymousUser'" href="/signup">
+            회원가입
+        </a>
+    </div>
+</div>
+
+<div class='main_banner'>
+    <span class="main_message"> 알고리즘 문제 풀이 경험을 선택해주세요!</span>
+</div>
+
+<div class="newbie_wrapper">
+    <div class="newbie_area">
+        <a href="https://www.acmicpc.net/step">
+            <div class="newbie_box">
+                <div class="newbie_text">입출력도<br>처음이에요!</div>
+                <div class="newbie_main">입문</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="newbie_area">
+        <a href="https://www.acmicpc.net/workbook/codeplus">
+            <div class="newbie_box">
+                <div class="newbie_text">큐, 스택이 뭔지<br>알아요!</div>
+                <div class="newbie_main">보통</div>
+            </div>
+        </a>
+    </div>
+
+    <div class="newbie_area">
+        <a href="https://solved.ac/class/3">
+            <div class="newbie_box">
+                <div class="newbie_text">BFS, DFS를<br>풀 수 있어요!</div>
+                <div class="newbie_main">경험</div>
+            </div>
+        </a>
+    </div>
+</div>
+<div id='wrap'>
+    <footer>
+        <nav>
+            <!--            <a href='https://cocoder.tistory.com' target='_blank'>Blog</a> |-->
+            <!--            <a href='https://github.com/cocoder16' target='_blank'>Github</a>-->
+        </nav>
+        <p>
+            <span>Boostcamp-AI-tech-3 RecSys-05</span><br/>
+            <!--        <span>이메일 : cocoder16@gmail.com</span><br/>-->
+            <span>Copyright 2022. 알잘딱깔센. All Rights Reserved.</span>
+        </p>
+    </footer>
+</div>
+</body>
+</html>

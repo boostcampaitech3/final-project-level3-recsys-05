@@ -22,4 +22,9 @@ public class MainController {
         return "index";
     }
 
+    @GetMapping("/newbie")
+    public String newbie(){
+        return "newbie";
+    }
+
 }
