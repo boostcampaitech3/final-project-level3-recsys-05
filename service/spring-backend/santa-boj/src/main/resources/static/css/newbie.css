@@ -71,7 +71,7 @@ body {
     /*margin: 150px 0 0 5%;*/
     position: absolute;
     top: 150px;
-    left: 5%;
+    left: 10%;
 }
 
 .main_message {
@@ -86,13 +86,14 @@ body {
 .newbie_wrapper {
     display: flex;
     /*margin: 20px 10% 0 10%;*/
+    justify-content: center;
+    align-content: center;
     height: 300px;
     position: absolute;
     top: 180px;
     width: 1500px;
     /*top: 50%;*/
-    left: 50%;
-    transform: translate(-50%, 0%);
+    /*transform: translate(-50%, 0%);*/
 }
 
 .newbie_area {
