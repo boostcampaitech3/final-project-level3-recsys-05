@@ -30,7 +30,8 @@ body {
     top: 25px;
     left: 25px;
     opacity: 1;
-    visibility: hidden;
+    display: flex;
+    margin-left: 25px;
 }
 
 .login_wrapper {
