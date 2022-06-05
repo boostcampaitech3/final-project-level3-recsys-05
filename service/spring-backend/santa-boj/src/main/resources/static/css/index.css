@@ -7,6 +7,7 @@ a:visited { text-decoration: none;}
 }
 body {
     font-size: 14px;
+    min-width: 1000px;
 }
 
 .upper_side_bar {
@@ -17,6 +18,11 @@ body {
     top: 0;
     left: 0;
     color: #fff;
+    background-color: #ffffff;
+    opacity: 90%;
+    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+    display: flex;
+    align-items: center;
 }
 
 .logo {
@@ -25,6 +31,8 @@ body {
     top: 25px;
     left: 25px;
     opacity: 1;
+    display: flex;
+    margin-left: 25px;
 }
 
 .login_wrapper {
@@ -43,7 +51,7 @@ body {
 
 .upper_element {
     font-size: 20px;
-    font-family: Arial;
+    font-family: NanumSquare;
     margin-right: 15px;
     color: #999999;
 }
@@ -62,7 +70,7 @@ body {
     background: rgba(179,229,252,0.30000001192092896);
     opacity: 1;
     position: absolute;
-    top: 80px;
+    top: 8%;
     left: 0px;
     overflow: hidden;
 }
@@ -74,12 +82,24 @@ body {
     top: 25%;
     left: 5%;
     font-family: NanumSquare;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 1.9em;
     line-height: 250%;
     white-space: pre;
     opacity: 1;
     text-align: left;
+    word-break: keep-all;
+    text-decoration: none;
+}
+
+.introduction1_line {
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 7px;
+}
+
+.introduction2_sub {
+    color: #777777;
 }
 
 .introduction2 {
@@ -90,7 +110,7 @@ body {
     right: 5%;
     font-family: NanumSquare;
     font-weight: 700;
-    font-size: 1.9em;
+    font-size: 20px;
     line-height: 250%;
     opacity: 1;
     text-align: right;
@@ -239,7 +259,7 @@ section {
 
 footer {
     width: 100%;
-    height: 90px;
+    height: 8%;
     bottom: 0px;
     position: absolute;
     border-top: 1px solid #c4c4c4;
