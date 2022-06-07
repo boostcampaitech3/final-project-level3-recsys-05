@@ -64,12 +64,7 @@ def result():
         data = {
             'key' : 123456,
             'username' : request.form['user_id'],
-            "model_type_click": {
-                        'item2vec' : {'pos_click' : 0, 'total_view' : 25},
-                        'ease' : {'pos_click' : 0, 'total_view' : 25},
-                        'lightGCN' : {'pos_click' : 12, 'total_view' : 25},
-                        'multi_modal' : {'pos_click' : 13, 'total_view' : 25},
-                    }
+            "model_type_click": {}
         }
 
         res = requests.post(url, json = data)

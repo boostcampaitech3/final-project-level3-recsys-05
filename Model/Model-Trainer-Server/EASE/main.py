@@ -3,6 +3,7 @@ import argparse
 from box import Box
 from utils.config import ConfigParser
 import pickle
+import requests
 
 import mlflow
 
@@ -65,4 +66,11 @@ if __name__ == '__main__':
         mlflow.log_param("reg", config.reg)
         main(config)
     
-    # TODO: 모델 학습 완료 후 모델 서빙 서버에 모델 업데이트 requests 보내기 (model_type, run_id, model_name)
+    model_update_data = {
+        'key': config.model_update_key,
+        'model_type': config.model_type,
+        "model_name": config.model_name,
+        "run_id": run.info.run_id,
+    }
+    res = requests.post(config.model_update_url, json = model_update_data)
+    print(res.json())
