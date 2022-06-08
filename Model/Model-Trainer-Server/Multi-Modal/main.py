@@ -133,11 +133,12 @@ if __name__ == '__main__':
         
         main(config)
     
-    model_update_data = {
-        'key': config.model_update_key,
-        'model_type': config.model_type,
-        "model_name": config.model_name,
-        "run_id": run.info.run_id,
-    }
-    res = requests.post(config.model_update_url, json = model_update_data)
-    print(res.json())
+    if config.model_update:
+        model_update_data = {
+            'key': config.model_update_key,
+            'model_type': config.model_type,
+            "model_name": config.model_name,
+            "run_id": run.info.run_id,
+        }
+        res = requests.post(config.model_update_url, json = model_update_data)
+        print(res.json())
