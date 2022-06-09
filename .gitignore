@@ -8,7 +8,7 @@ Web
 save
 Embedding
 airflow/logs/
-airflow*
+airflow-*
 *.db
 webserver_config.py
 airflow.cfg
