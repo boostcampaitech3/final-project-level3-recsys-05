@@ -110,7 +110,7 @@ body {
     right: 5%;
     font-family: NanumSquare;
     font-weight: 700;
-    font-size: 20px;
+    font-size: 1.9em;
     line-height: 250%;
     opacity: 1;
     text-align: right;
@@ -144,7 +144,7 @@ body {
     top: 640px;
     font-family: NanumSquare;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 20px;
     opacity: 1;
 }
 

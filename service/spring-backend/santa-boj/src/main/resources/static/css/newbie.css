@@ -119,6 +119,10 @@ body {
     z-index: 2;
 }
 
+.newbie_box:hover {
+    background: linear-gradient(rgb(180, 180, 180), rgba(229,229,229,0));
+}
+
 .newbie_main {
     width: 90%;
     color: rgba(64,64,64,1);
