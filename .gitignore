@@ -11,3 +11,4 @@ airflow/logs/
 airflow-*
 *.db
 webserver_config.py
+airflow.cfg
