@@ -1,4 +1,9 @@
 {
+    "model_update" : false,
+    "model_update_url" : "http://101.101.218.250:30002/update/",
+    "model_update_key" : 123456,
+    "model_type" : "multi_modal_v1",
+
     "model_name": "Mutl-Modal",
     "save_dir" : "./save",
     "remote_server_uri" : "http://34.64.110.227:5000",

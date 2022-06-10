@@ -1,4 +1,9 @@
 {
+    "model_update" : false,
+    "model_update_url" : "http://101.101.218.250:30002/update/",
+    "model_update_key" : 123456,
+    "model_type" : "lightGCN_v1",
+
     "model_name": "LightGCN",
     "embedding_name": "LightGCN-Embedding",
     "save_dir" : "./save",
