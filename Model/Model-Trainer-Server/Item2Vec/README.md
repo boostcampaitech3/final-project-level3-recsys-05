@@ -14,7 +14,7 @@ Config files are in `.json` format:
     "model_update" : false,
     "model_update_url" : "http://101.101.218.250:30002/update/",
     "model_update_key" : 123456,
-    "model_type" : "item2vec_v1",
+    "model_type" : "item2vec",
     
     "model_name" : "Item2Vec-Embedding",
     "save_dir" : "./save",
