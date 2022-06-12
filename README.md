@@ -24,11 +24,7 @@
 - GPU Tesla V100-PCIE-32GB
 
 # 🙋🏻‍♂️🙋🏻‍♀️ 프로젝트 팀 구성 및 역할
-- **김건우:** 데이터 정의서 작성, ETL 데이터 파이프라인 및 DB 설계 및 구축, 모델 재학습 스케줄링
-- **김동우:** 모델 설계 및 분석
-- **박기정:** 서비스 프론트 백엔드 개발, MLOps, 모델 추론 전략, 모델 학습 파이프라인 설계
-- **심유정:** PM, 아키텍처 제작, 데이터 수집 및 탐색, 웹 디자인, 보고 자료 제작
-- **이성범:** 데이터 패턴 분석, 모델 설계 및 분석, 모델 API 서버 개발, 모델 학습 파이프라인 구축
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233642-70776e4b-a8e2-4e1e-8c55-c6f020f738d3.png" /></p>
 
 # 전체 서비스
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233367-f1406c60-0728-4e55-9abe-fcfb9977d45e.png" /></p>
