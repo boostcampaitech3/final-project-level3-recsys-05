@@ -1,4 +1,8 @@
-# PyTorch Template
+# Seq-Model
+
+## Model Architecture
+
+Multimodal에서 seq-Embedding 만을 사용하는 형태
 
 ## Usage
 train
