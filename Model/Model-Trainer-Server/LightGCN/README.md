@@ -1,4 +1,7 @@
-# PyTorch Template
+# LightGCN
+
+## Model Architecture
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173226266-b6ed5ff8-4199-487d-930e-de3ad37e0652.png" /></p>
 
 ## Usage
 train
@@ -8,6 +11,11 @@ train
 Config files are in `.json` format:
 ```javascript
 {
+    "model_update" : false,
+    "model_update_url" : "http://101.101.218.250:30002/update/",
+    "model_update_key" : 123456,
+    "model_type" : "lightGCN",
+
     "model_name": "LightGCN",
     "embedding_name": "LightGCN-Embedding",
     "save_dir" : "./save",
@@ -28,6 +36,4 @@ Config files are in `.json` format:
     "node_dropout_rate" : 0.2,
     "lr" : 0.001
 }
-
-
 ```
