@@ -13,7 +13,7 @@
 
 <div align="center">
 
-### 코딩 테스트를 준비하는 사람들을 위한 실시간 백준 문제 추천 웹 서비스
+### 코딩 테스트를 준비하는 사람들을 위한 실시간 백준 문제 추천 웹서비스
   
 </div>
 
@@ -29,6 +29,9 @@
 
 # 전체 서비스
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233367-f1406c60-0728-4e55-9abe-fcfb9977d45e.png" /></p>
+
+# 사용 데이터
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173243242-dc1b776a-1e5f-4eac-9885-df1d777c8ce8.png" /></p>
 
 # 사용 모델
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233404-0ec09518-daea-4983-872d-d386c1bc1d92.png" /></p>
