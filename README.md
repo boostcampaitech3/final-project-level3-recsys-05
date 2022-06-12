@@ -7,7 +7,17 @@
   
 </div>
 
-# 🏆️ 프로젝트 목표
+# 🏆️ 프로젝트 주제
+
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233157-8f7d9220-0fc3-46ef-803d-07226ca10742.png" /></p>
+
+<div align="center">
+
+### 코딩 테스트를 준비하는 사람들을 위한 실시간 백준 문제 추천 웹 서비스
+  
+</div>
+
+**동영상 링크 추가**
 
 # 💻 활용 장비
 - Ubuntu 18.04.5 LTS
@@ -19,3 +29,27 @@
 - **박기정:** 서비스 프론트 백엔드 개발, MLOps, 모델 추론 전략, 모델 학습 파이프라인 설계
 - **심유정:** PM, 아키텍처 제작, 데이터 수집 및 탐색, 웹 디자인, 보고 자료 제작
 - **이성범:** 데이터 패턴 분석, 모델 설계 및 분석, 모델 API 서버 개발, 모델 학습 파이프라인 구축
+
+# 전체 서비스
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233367-f1406c60-0728-4e55-9abe-fcfb9977d45e.png" /></p>
+
+# 사용 모델
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233404-0ec09518-daea-4983-872d-d386c1bc1d92.png" /></p>
+
+# 모델 학습 파이프라인
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233413-1682d0d3-17eb-4b34-9df5-61301aabed18.png" /></p>
+
+# 모델 API 서버
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233420-59c10b85-f733-414d-9821-68907f299697.png" /></p>
+
+# 데이터 파이프 라인
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233425-8c8be488-e0f2-4811-809b-d4febb7f5f36.png" /></p>
+
+# 웹 서비스
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233433-8381b22a-d735-4131-b2bf-c93c786d31ad.png" /></p>
+
+# CI/CD
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233439-a139d874-05b3-4d06-b8dc-545525e8ca93.png" /></p>
+
+# 사용자 요청 흐름도
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233456-aac88eee-8bc2-41a1-b639-d96a72a7b466.png" /></p>
