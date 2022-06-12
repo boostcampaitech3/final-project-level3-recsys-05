@@ -7,7 +7,7 @@
   
 </div>
 
-# 🏆️ 프로젝트 주제
+# 🏆️ 프로젝트 소개
 
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233157-8f7d9220-0fc3-46ef-803d-07226ca10742.png" /></p>
 
@@ -24,7 +24,7 @@
 - Ubuntu 18.04.5 LTS
 - GPU Tesla V100-PCIE-32GB
 
-# 🙋🏻‍♂️🙋🏻‍♀️ 프로젝트 팀 구성 및 역할
+# 🙋🏻‍♂️🙋🏻‍♀️ 팀 소개
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233642-70776e4b-a8e2-4e1e-8c55-c6f020f738d3.png" /></p>
 
 # 전체 서비스
