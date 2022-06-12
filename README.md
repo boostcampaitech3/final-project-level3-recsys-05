@@ -17,7 +17,8 @@
   
 </div>
 
-**동영상 링크 추가**
+* [![GoogleDrive Badge](https://img.shields.io/badge/REPORT-405263?style=flat-square&logo=Quip&link=https://drive.google.com/file/d/1VnYsB8k4Fxu6UFhAxuTi4m01BjoH2uwS/view?usp=sharing)](https://github.com/boostcampaitech3/final-project-level3-recsys-05/blob/main/RecSys_5%EC%A1%B0_%EC%82%B0%ED%83%80%EB%B0%B1%EC%A4%80_%EB%B0%9C%ED%91%9C%EC%9E%90%EB%A3%8C.pdf)
+* [![Youtube Badge](https://img.shields.io/badge/Youtube-ff0000?style=flat-square&logo=youtube&link=https://youtu.be/KPS1sD_lcMc)]()
 
 # 💻 활용 장비
 - Ubuntu 18.04.5 LTS
