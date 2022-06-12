@@ -1,4 +1,7 @@
-# PyTorch Template
+# Multimodal
+
+## Model Architecture
+<p align="center"><img src="https://user-images.githubusercontent.com/65529313/173226380-99fb2ed5-0fe3-4baf-ba6a-9254faca790a.png" /></p>
 
 ## Usage
 train
@@ -8,6 +11,11 @@ train
 Config files are in `.json` format:
 ```javascript
 {
+    "model_update" : false,
+    "model_update_url" : "http://101.101.218.250:30002/update/",
+    "model_update_key" : 123456,
+    "model_type" : "multi_modal",
+
     "model_name": "Mutl-Modal",
     "save_dir" : "./save",
     "remote_server_uri" : "http://34.64.110.227:5000",
