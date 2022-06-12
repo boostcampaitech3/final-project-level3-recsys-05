@@ -28,6 +28,6 @@
 ### Architecture
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173226380-99fb2ed5-0fe3-4baf-ba6a-9254faca790a.png" /></p>
 
-### Train image
+### Train
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233951-a41b64e9-b658-49b0-b03e-8260f00dceb7.png" /></p>
 
