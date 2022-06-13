@@ -21,8 +21,9 @@
 * [![Youtube Badge](https://img.shields.io/badge/Youtube-ff0000?style=flat-square&logo=youtube&link=https://youtu.be/KPS1sD_lcMc)](https://www.youtube.com/watch?v=9IH-vjs3syI)
 
 # 💻 활용 장비
-- Ubuntu 18.04.5 LTS
-- GPU Tesla V100-PCIE-32GB
+- **Ubuntu** 18.04.5 LTS
+- **GPU** Tesla V100-PCIE-32GB
+- **Google Cloud Platform VM Instance** (Ubuntu, 18.04 LTS)
 
 # 🙋🏻‍♂️🙋🏻‍♀️ 팀 소개
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233642-70776e4b-a8e2-4e1e-8c55-c6f020f738d3.png" /></p>
