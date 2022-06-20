@@ -1,0 +1,45 @@
+{% load static %}
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.css">
+    <link rel="stylesheet" href="{% static '/css/main.css' %}?after">
+    <title>Santa BaekJoon</title>
+</head>
+<body>
+    <div class='hello'><span style="color: royalblue">{{ username }}</span>님의 문제 추천 결과!🎅</div>
+    <div class='result_wrapper'>
+        <div class="element_wrapper">
+            <div class="explain">필터링 되지 않은 추천 List</div>
+            <ul>
+                {% for item in non_filtering_output %}
+                    <a href="https://www.acmicpc.net/problem/{{ item }}">
+                    <li class="result_element">{{ item }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="element_wrapper">
+            <div class="explain">최근 풀이에 속하는 문제가 필터링된 추천 List</div>
+            <ul>
+                {% for item in lately_filtering_output %}
+                    <a href="https://www.acmicpc.net/problem/{{ item }}">
+                    <li class="result_element">{{ item }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="element_wrapper">
+            <div class="explain">지금 까지 푼 모든 문제가 필터링된 추천 List</div>
+            <ul>
+                {% for item in total_filtering_output %}
+                    <a href="https://www.acmicpc.net/problem/{{ item }}">
+                    <li class="result_element">{{ item }}</li>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

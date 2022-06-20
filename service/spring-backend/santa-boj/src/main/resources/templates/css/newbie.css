@@ -1,0 +1,134 @@
+a:link { text-decoration: none;}
+
+a:visited { text-decoration: none;}
+
+* {
+    box-sizing: border-box;
+}
+body {
+    font-size: 14px;
+}
+
+
+.upper_side_bar {
+    height: 80px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 9;
+    border-bottom: #C7CCCE;
+    border-style: solid;
+    color: #fff;
+}
+
+.logo {
+    width: 160px;
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    opacity: 1;
+}
+
+.login_wrapper {
+    display: flex;
+    color: rgba(0, 0, 0, 1);
+    position: absolute;
+    width: 300px;
+    height: 30px;
+    top: 50%;
+    right: 10px;
+    margin-right: 30px;
+    font-size: 14px;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+
+.upper_element {
+    font-size: 20px;
+    font-family: NanumSquare;
+    margin-right: 15px;
+    color: #999999;
+}
+
+.upper_element:visited {
+    color: #999999;
+}
+
+.upper_element:hover {
+    color: #222222;
+}
+
+
+.main_banner {
+    width: 100%;
+    height: 50px;
+    margin: 150px 0 0 5%;
+}
+
+.main_message {
+    font-family: NanumSquare;
+    font-size: 30px;
+    font-weight: 700;
+    text-align: left;
+    line-height: 0.5em;
+}
+
+.newbie_wrapper {
+    display: flex;
+    margin: 20px 10% 0 10%;
+    height: 300px;
+}
+
+.newbie_area {
+    width: 250px;
+    height: 250px;
+    background-position: center center;
+    opacity: 1;
+    margin: 5% 5% 0;
+    flex-flow: row nowrap;
+    overflow: hidden;
+}
+
+.newbie_box {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    background-position: center center;
+    background: linear-gradient(rgba(229,229,229,1), rgba(229,229,229,0));
+    opacity: 1;
+    overflow: hidden;
+    z-index: 2;
+}
+
+.newbie_main {
+    width: 90%;
+    color: rgba(64,64,64,1);
+    margin: 40% 10% 10% 0;
+    font-family: NanumSquare;
+    font-weight: 700;
+    font-size: 1.8rem;
+    opacity: 1;
+    text-align: right;
+    justify-content: flex-end;
+    z-index: 1;
+}
+
+.newbie_main:hover {
+    color: #999999;
+}
+
+
+.newbie_text {
+    width: 200px;
+    color: rgba(64,64,64,1);
+    margin: 30px 0 0 30px;
+    font-family: NanumSquare;
+    font-weight: Bold;
+    font-size: 1.5rem;
+    line-height: 150%;
+    opacity: 1;
+    text-align: left;
+    z-index: 2;
+}

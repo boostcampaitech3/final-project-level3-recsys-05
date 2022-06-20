@@ -1,0 +1,15 @@
+.git
+.gitignore
+__pycache__
+.ipynb_checkpoints
+Web
+*.csv
+*.out
+save
+Embedding
+airflow/logs/
+airflow-*
+*.db
+webserver_config.py
+airflow.cfg
+logs
