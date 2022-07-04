@@ -56,7 +56,7 @@
 # 데이터 파이프 라인
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233425-8c8be488-e0f2-4811-809b-d4febb7f5f36.png" /></p>
 
-- Airlflow를 이용한 데이터 수집 및 병령활, Bigquery를 이용한 데이터 관리
+- Airlflow를 이용한 데이터 수집 및 병렬화, Bigquery를 이용한 데이터 관리
 
 # 웹 서비스
 <p align="center"><img src="https://user-images.githubusercontent.com/65529313/173233433-8381b22a-d735-4131-b2bf-c93c786d31ad.png" /></p>
